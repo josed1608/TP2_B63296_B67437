@@ -41,6 +41,7 @@ NodoPrincipal *Grafo::agregarVert(std::string etiq)
 void Grafo::agregarArista(NodoPrincipal *v1, NodoPrincipal *v2, int peso)
 {
 	v1->primerAdy = new NodoSecundario(peso, v2, v1->primerAdy);
+	v2->primerAdy = new NodoSecundario(peso, v1, v2->primerAdy);
 	nAristas++;
 }
 
@@ -48,6 +49,13 @@ void Grafo::modificarPeso(NodoPrincipal *v1, NodoPrincipal *v2, int peso)
 {
 	NodoSecundario* arista = v1->primerAdy;
 	while(arista != nullptr && arista->refListaPrincipal != v2)
+	{
+		arista = arista->siguienteAdy;
+	}
+	arista->peso = peso;
+
+	arista = v2->primerAdy;
+	while(arista != nullptr && arista->refListaPrincipal != v1)
 	{
 		arista = arista->siguienteAdy;
 	}
@@ -85,6 +93,24 @@ void Grafo::eliminarArista(NodoPrincipal *v1, NodoPrincipal *v2)
 	{
 		NodoSecundario* arista = v1->primerAdy;
 		while(arista != nullptr && arista->siguienteAdy->refListaPrincipal != v2)
+		{
+			arista = arista->siguienteAdy;
+		}
+		NodoSecundario* borrable = arista->siguienteAdy;
+		arista->siguienteAdy = arista->siguienteAdy->siguienteAdy;
+		delete borrable;
+	}
+
+	if(v2->primerAdy->refListaPrincipal == v1)
+	{
+		NodoSecundario* borrable = v2->primerAdy;
+		v2->primerAdy = v2->primerAdy->siguienteAdy;
+		delete borrable;
+	}
+	else
+	{
+		NodoSecundario* arista = v2->primerAdy;
+		while(arista != nullptr && arista->siguienteAdy->refListaPrincipal != v1)
 		{
 			arista = arista->siguienteAdy;
 		}

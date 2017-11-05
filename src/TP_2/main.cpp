@@ -1,14 +1,188 @@
 #include <iostream>
+#include <string>
+
 #include "grafoLista.h"
 //#include "grafoMatriz.h"
 #include "colap.h"
 #include "dicc.h"
 #include "conjuntod.h"
 
+void probarAlgoritmos();
+
+void probarOperadores();
+
+void verTiempos();
+
+vert buscarVertice(Grafo &grafo, std::string etiq);
+
+void impEtiquetas(Grafo& grafo);
+
+void impAristas(Grafo& grafo);
+
 int main()
 {
-	Dicc<int> diccPrueba = Dicc<int>();
-
-
+	bool prueba = true;
+	while(prueba){
+		std::cout << "Bienvenido, para utilizar este programa de prueba, se le presentaran distintos menus con opciones indexadas por numeros y usted debera digitar el numero de "
+					 "la opcion que desea y presionar enter para avanzar:\n"
+					 "\t1. Probar algoritmos de grafos\n"
+					 "\t2. Aplicar operadores basicos de grafos\n"
+					 "\t3. Ver tiempos de ejecucion reales\n"
+					 "\t4. Salir\n\n";
+		int opcion = 0;
+		std::cin >> opcion;
+		switch(opcion)
+		{
+			case 1: probarAlgoritmos(); break;
+			case 2: probarOperadores(); break;
+			case 3: verTiempos(); break;
+			default: prueba = false; break;
+		}
+	}
 	return 0;
 }
+
+void probarOperadores()
+{
+	bool prueba = true;
+	Grafo grafo = Grafo();
+	std::string etiq, etiqSalida, etiqEntrada, nuevaEtiq;
+	int peso = 0;
+	while(prueba)
+	{
+		std::cout << "\t1.  Vaciar Grafo\n"
+					 "\t2.  Grafo vacio?\n"
+					 "\t3.  Agregar vertice\n"
+					 "\t4.  Agregar arista (no debe existir)\n"
+					 "\t5.  Modificar peso\n"
+					 "\t6.  Eliminar vertice (solo vertices aislados)\n"
+					 "\t7.  Eliminar arista (debe existir)\n"
+					 "\t8.  Modificar etiqueta\n"
+					 "\t9.  Numero de aristas\n"
+					 "\t10. Numero de vertices\n"
+					 "\t11. Numero de aristas de salida (vertices adyacentes)\n"
+					 "\t12. Esta aislado el vertice?\n"
+					 "\t13. Peso de una arista\n"
+					 "\t14. Imprimir etiquetas del grafo\n"
+					 "\t15. Volver al menu principal\n";
+		int opcion = 0;
+		std::cin >> opcion;
+		switch (opcion)
+		{
+		case 1:
+			grafo.vaciar();
+			break;
+		case 2:
+			grafo.vacio() == true ? std::cout <<  "vacio\n" : std::cout <<  "no vacio\n";
+			break;
+		case 3:
+			std::cout << "Digite la etiqueta del vertice que desea agregar\n";
+			std::cin >> etiq;
+			grafo.agregarVert(etiq);
+			break;
+		case 4:
+			std::cout << "Digite la etiqueta del vertice de salida\n";
+			std::cin >> etiqSalida;
+			std::cout << "Digite la etiqueta del vertice de entrada\n";
+			std::cin >> etiqEntrada;
+			std::cout << "Digite el peso de la arista\n";
+			std::cin >> peso;
+			grafo.agregarArista(buscarVertice(grafo, etiqSalida), buscarVertice(grafo, etiqEntrada), peso);
+			break;
+		case 5:
+			std::cout << "Digite la etiqueta del vertice de salida\n";
+			std::cin >> etiqSalida;
+			std::cout << "Digite la etiqueta del vertice de entrada\n";
+			std::cin >> etiqEntrada;
+			std::cout << "Digite el nuevo peso de la arista\n";
+			std::cin >> peso;
+			grafo.modificarPeso(buscarVertice(grafo, etiqSalida), buscarVertice(grafo,etiqEntrada), peso);
+			break;
+		case 6:
+			std::cout << "Digite la etiqueta del vertice que desea eliminar\n";
+			std::cin >> etiq;
+			grafo.eliminarVert(buscarVertice(grafo,etiq));
+			break;
+		case 7:
+			std::cout << "Digite la etiqueta del vertice de salida\n";
+			std::cin >> etiqSalida;
+			std::cout << "Digite la etiqueta del vertice de entrada\n";
+			std::cin >> etiqEntrada;
+			grafo.eliminarArista(buscarVertice(grafo,etiqSalida), buscarVertice(grafo,etiqEntrada));
+			break;
+		case 8:
+			std::cout << "Digite la etiqueta del vertice que desea modificar\n";
+			std::cin >> etiq;
+			std::cout << "Digite la nueva etiqueta\n";
+			std::cin >> nuevaEtiq;
+			grafo.modificarEtiq(buscarVertice(grafo,etiq), nuevaEtiq);
+			break;
+		case 9:
+			std::cout << grafo.numAristas() << std::endl;
+			break;
+		case 10:
+			std:: cout << grafo.numVerts() << std::endl;
+			break;
+		case 11:
+			std::cout << "Digite la etiqueta del vertice al que desea conocer la cantidad de vertices adyacentes\n";
+			std::cin >> etiq;
+			grafo.numAristasSalida(buscarVertice(grafo,etiq));
+			break;
+		case 12:
+			std::cout << "Digite la etiqueta del vertice que desea conocer si esta aislado\n";
+			std::cin >> etiq;
+			(grafo.estaAislado(buscarVertice(grafo,etiq)) == true )? std::cout << "Si\n" : std::cout << "No\n";
+			break;
+		case 13:
+			std::cout << "Digite la etiqueta del vertice de salida\n";
+			std::cin >> etiqSalida;
+			std::cout << "Digite la etiqueta del vertice de entrada\n";
+			std::cin >> etiqEntrada;
+			std::cout << grafo.pesoArista(buscarVertice(grafo,etiqSalida), buscarVertice(grafo,etiqEntrada)) << std::endl;
+			break;
+		case 14:
+			impEtiquetas(grafo);
+			break;
+		default:
+			prueba = false;
+			break;
+		}
+	}
+}
+
+void probarAlgoritmos()
+{
+
+}
+
+void verTiempos()
+{
+
+}
+
+vert buscarVertice(Grafo& grafo, std::string etiq)
+{
+	vert vertice = grafo.primerVert();
+	while(vertice != vertNulo && grafo.etiqueta(vertice) != etiq)
+	{
+		vertice = grafo.steVert(vertice);
+	}
+	return vertice;
+}
+
+void impEtiquetas(Grafo& grafo)
+{
+	vert vertice = grafo.primerVert();
+	while(vertice != vertNulo)
+	{
+		std::cout << grafo.etiqueta(vertice) << " | ";
+		vertice = grafo.steVert(vertice);
+	}
+	std::cout << std::endl;
+}
+
+void impAristas(Grafo& grafo)
+{
+	//Preguntarle a la profe si se puede hacer una clase pareja para hacer un diccionario de aristas no dirigidas
+}
+

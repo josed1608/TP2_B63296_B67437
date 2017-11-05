@@ -5,10 +5,10 @@
 #include "dicc.h"
 #include "conjuntod.h"
 
-using namespace std;
-
 int main()
 {
-	cout << "Hello World!" << endl;
+	Dicc<int> diccPrueba = Dicc<int>();
+
+
 	return 0;
 }

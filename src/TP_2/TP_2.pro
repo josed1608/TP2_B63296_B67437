@@ -6,7 +6,6 @@ CONFIG -= qt
 SOURCES += main.cpp \
     grafoLista.cpp \
     colap.cpp \
-    dicc.cpp \
     conjuntod.cpp \
     algoritmos.cpp
 

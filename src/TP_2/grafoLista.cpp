@@ -160,5 +160,5 @@ NodoPrincipal *Grafo::steVertAdy(NodoPrincipal *deV1, NodoPrincipal *trasV2)
 	{
 		arista = arista->siguienteAdy;
 	}
-	return arista->siguienteAdy->refListaPrincipal;
+	return arista->siguienteAdy != nullptr ? arista->siguienteAdy->refListaPrincipal : nullptr;
 }

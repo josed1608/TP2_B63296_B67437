@@ -6,6 +6,7 @@
 #include "colap.h"
 #include "dicc.h"
 #include "conjuntod.h"
+#include "arista.h"
 
 void probarAlgoritmos();
 
@@ -64,7 +65,12 @@ void probarOperadores()
 					 "\t12. Esta aislado el vertice?\n"
 					 "\t13. Peso de una arista\n"
 					 "\t14. Imprimir etiquetas del grafo\n"
-					 "\t15. Volver al menu principal\n";
+					 "\t15. Imprimir vertices del grafo\n"
+					 "\t16. Primer vertice\n"
+					 "\t17. Siguiente vertice\n"
+					 "\t18. Primer vertice adyacente\n"
+					 "\t19. Siguiente vertice adyancente\n"
+					 "\t20. Volver al menu principal\n";
 		int opcion = 0;
 		std::cin >> opcion;
 		switch (opcion)
@@ -143,6 +149,35 @@ void probarOperadores()
 		case 14:
 			impEtiquetas(grafo);
 			break;
+		case 15:
+			impAristas(grafo);
+			break;
+		case 16:
+			std::cout << "El primer vertice posee etiqueta: " << grafo.etiqueta(grafo.primerVert()) << std::endl;
+			break;
+		case 17:
+			std::cout << "Digite la etiqueta del vertice que desea conocer su siguiente\n";
+			std::cin >> etiq;
+			if(grafo.steVert(buscarVertice(grafo, etiq)) != vertNulo)
+				std::cout << "La etiquete del siguiente vertice es: " << grafo.etiqueta(grafo.steVert(buscarVertice(grafo, etiq))) << std::endl;
+			break;
+		case 18:
+			std::cout << "Digite la etiqueta del vertice que desea conocer su primer adyacente\n";
+			std::cin >> etiq;
+			if(grafo.primerVertAdy(buscarVertice(grafo, etiq)) != vertNulo)
+				std::cout << "La etiquete del primer vertice adyacente es: " << grafo.etiqueta(grafo.primerVertAdy(buscarVertice(grafo, etiq))) << std::endl;
+			break;
+		case 19:
+			std::cout << "Digite la etiqueta del vertice que desea conocer su siguiente vertice adyacente\n";
+			std::cin >> etiqEntrada;
+			std::cout << "Digite la etiqueta del vertice tras el cual desea otro adyacente\n";
+			std::cin >> etiqEntrada;
+			if (grafo.steVertAdy(buscarVertice(grafo, etiqEntrada), buscarVertice(grafo, etiqSalida)) != vertNulo){
+				std::cout << "hola";
+				std::cout << "La etiquete del siguiente vertice es: " << grafo.etiqueta(grafo.steVertAdy(buscarVertice(grafo, etiqEntrada), buscarVertice(grafo, etiqSalida))) << std::endl;
+
+			}
+			break;
 		default:
 			prueba = false;
 			break;
@@ -183,6 +218,21 @@ void impEtiquetas(Grafo& grafo)
 
 void impAristas(Grafo& grafo)
 {
-	//Preguntarle a la profe si se puede hacer una clase pareja para hacer un diccionario de aristas no dirigidas
+	Dicc<Arista> aristas = Dicc<Arista>();
+	vert vertice = grafo.primerVert();
+	while(vertice != vertNulo)
+	{
+		vert adyacente = grafo.primerVertAdy(vertice);
+		while(adyacente != vertNulo)
+		{
+			if(!aristas.pertenece(Arista(vertice, adyacente, grafo.pesoArista(vertice, adyacente)))){
+				std::cout << "(" << grafo.etiqueta(vertice) << ", " << grafo.etiqueta(adyacente) << ", " << grafo.pesoArista(vertice, adyacente) << ")\n";
+				aristas.agregar(Arista(vertice, adyacente, grafo.pesoArista(vertice, adyacente)));
+			}
+			adyacente = grafo.steVertAdy(vertice, adyacente);
+		}
+		vertice = grafo.steVert(vertice);
+	}
+	std::cout << std::endl;
 }
 

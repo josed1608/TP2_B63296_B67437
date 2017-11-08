@@ -31,7 +31,26 @@ vert Grafo::agregarVert(std::string e)
 
 void Grafo::eliminarVert(vert v)
 {
-
+    //mueve hasta llegar al final en el vector de etiquetas
+    for(int i=v+1; i<=n ;++i)
+    {
+        arrEtiq[i-1] = arrEtiq[i];
+    }
+    // Mueve toda las matriz de pesos
+    for(int i= v+1, j=1; i <=n ; ++i)
+    {
+        //mueve la columna
+        for(j=1; j<=n; ++j)
+        {
+            matPeso[i-1][j] = matPeso[i][j];
+        }
+        //mueve la fila
+        for(j=1; j<=n; ++j)
+        {
+            matPeso[j][i-1] = matPeso[j][i];
+        }
+    }
+    --n;
 }
 
 vert Grafo::primerVertAdy(vert v)

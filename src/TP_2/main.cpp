@@ -50,6 +50,15 @@ void probarOperadores()
 	std::string etiq, etiqSalida, etiqEntrada, nuevaEtiq;
     vert v;
 	int peso = 0;
+    grafo.agregarVert("a");
+    grafo.agregarVert("b");
+    grafo.agregarVert("c");
+    grafo.agregarVert("d");
+    grafo.agregarArista(1 , 4, 2);
+    grafo.agregarArista(1 , 3, 3);
+    grafo.agregarArista(4 , 3, 5);
+
+
 	while(prueba)
 	{
 		std::cout << "\t1.  Vaciar Grafo\n"

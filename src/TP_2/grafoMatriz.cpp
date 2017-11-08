@@ -3,24 +3,30 @@
 vert vertNulo = -1;
 
 Grafo::Grafo()
+: n{0}
 {
-
 }
 
 
 void Grafo::vaciar()
 {
-
+    // Pone que el puntero al ultimo es 0
+    n=0;
 }
 
-bool Grafo::vacio()
-{
-    return true;
-}
 
 vert Grafo::agregarVert(std::string e)
 {
-    return 1;
+    ++n;
+    arrEtiq[n] =e;
+    // Coloca que no tiene aristas con los demas vertices
+    for(int i =1; i< n;++i)
+    {
+        matPeso[n][i]= matPeso[i][n] = PESONULL;
+    }
+    //Se pone como el peso en la diagonal de posicion un 0
+    matPeso[n][n]= 0;
+    return n;
 }
 
 void Grafo::eliminarVert(vert v)
@@ -28,72 +34,40 @@ void Grafo::eliminarVert(vert v)
 
 }
 
-void Grafo::modificarEtiq(vert v, std::string e)
-{
-
-}
-
-std::string Grafo::etiqueta(vert v)
-{
-    return "nel";
-}
-
-void Grafo::agregarArista(vert v1, vert v2, peso p )
-{
-
-}
-
-void Grafo::eliminarArista(vert v1, vert v2)
-{
-
-}
-
-void Grafo::modificarPeso(vert v1, vert v2, peso p)
-{
-
-}
-
-peso Grafo::pesoArista(vert v1, vert v2)
-{
-    return 0;
-}
-
-bool Grafo::adyacente(vert v1, vert v2)
-{
-    return false;
-}
-
-vert Grafo::primerVert()
-{
-    return 0;
-}
-
-vert Grafo::steVert(vert v)
-{
-    return 0;
-}
-
 vert Grafo::primerVertAdy(vert v)
 {
-    return 0;
+    for(int i =1; i<=n; ++i)
+    {
+        //Si se encuentra algo que no sea ni peso nulo ni el mismo(0), significa que hay arista.
+        if(matPeso[v][i]>0)
+            return i;
+    }
+    return vertNulo;
 }
 
 vert Grafo::steVertAdy(vert v, vert ady)
 {
-    return 0;
-}
-
-int Grafo::numVerts()
-{
-    return 0;
+    for(int i =ady+1; i<=n;++i )
+    {
+        //Si se encuentra algo que no sea ni peso nulo ni el mismo(0), significa que hay arista.
+        if(matPeso[v][i]>0)
+            return i;
+    }
+    return vertNulo;
 }
 
 int Grafo::numVertAdy(vert v)
 {
-    return 0;
+    int total =0;
+    for(int i =1; i<=n; ++i)
+    {
+        //Si se encuentra algo que no sea ni peso nulo ni el mismo(0), significa que hay arista.
+        if(matPeso[v][i] >0)
+           ++total;
+    }
+    return total;
 }
 
 Grafo::~Grafo()
 {
-
 }

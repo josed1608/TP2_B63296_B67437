@@ -172,11 +172,11 @@ void probarOperadores()
                 std::cout <<"No tiene ningun vertice adyacente"<< std::endl;
 			break;
         case 18:
-			std::cout << "Digite la etiqueta del vertice que desea conocer su siguiente vertice adyacente\n";
-			std::cin >> etiqEntrada;
+            std::cout << "Digite la etiqueta del vertice origen de ver si tiene un siguiente vertice adyacente\n";
+            std::cin >> etiq;
 			std::cout << "Digite la etiqueta del vertice tras el cual desea otro adyacente\n";
 			std::cin >> etiqEntrada;
-            if ((v= grafo.steVertAdy(buscarVertice(grafo, etiqEntrada), buscarVertice(grafo, etiqSalida)) ) != vertNulo)
+            if ((v= grafo.steVertAdy(buscarVertice(grafo, etiq), buscarVertice(grafo, etiqEntrada)) ) != vertNulo)
                 std::cout << "La etiquete del siguiente vertice es: " << grafo.etiqueta(v) << std::endl;
             else
                 std::cout <<"No hay siguiente"<< std::endl;

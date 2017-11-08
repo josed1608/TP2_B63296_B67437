@@ -39,8 +39,8 @@ class Grafo
 {
 public:
 	int nVerts;
-	int nAristas;
-	NodoPrincipal* primero;
+    int nAristas;
+    vert primero;
 
 public:
 	Grafo();
@@ -51,37 +51,37 @@ public:
 
 	inline bool vacio() {return nVerts==0;}
 
-	NodoPrincipal* agregarVert(std::string etiq);
+    vert agregarVert(std::string etiq);
 
-	void agregarArista(NodoPrincipal* v1, NodoPrincipal* v2, int peso);
+    void agregarArista(vert v1, vert v2, int peso);
 
-	void modificarPeso(NodoPrincipal* v1, NodoPrincipal* v2, int peso);
+    void modificarPeso(vert v1, vert v2, int peso);
 
-	void eliminarVert(NodoPrincipal* v);
+    void eliminarVert(vert v);
 
-	void eliminarArista(NodoPrincipal* v1, NodoPrincipal* v2);
+    void eliminarArista(vert v1, vert v2);
 
-	void modificarEtiq(NodoPrincipal* v, std::string etiq);
+    void modificarEtiq(vert v, std::string etiq);
 
-	inline int numAristas() {return nAristas;}
+    inline int numAristas() {return nAristas;}
 
 	inline int numVerts() {return nVerts;}
 
-	int numAristasSalida(NodoPrincipal* v);
+    int numAristasSalida(vert v);
 
-	bool estaAislado(NodoPrincipal* v);
+    bool adyacente(vert v1, vert v2);
 
-	inline std::string etiqueta(NodoPrincipal* v) {return v->etiqueta;}
+    inline std::string etiqueta(vert v) {return v->etiqueta;}
 
-	int pesoArista(NodoPrincipal* v1, NodoPrincipal* v2);
+    int pesoArista(vert v1, vert v2);
 
-	inline NodoPrincipal* primerVertAdy(NodoPrincipal* v) {return v->primerAdy->refListaPrincipal;}
+    inline vert primerVertAdy(vert v) {return v->primerAdy->refListaPrincipal;}
 
-	NodoPrincipal* steVertAdy(NodoPrincipal* deV1, NodoPrincipal* trasV2);
+    vert steVertAdy(vert deV1, vert trasV2);
 
-	inline NodoPrincipal* primerVert() {return primero;}
+    inline vert primerVert() {return primero;}
 
-	inline NodoPrincipal* steVert(NodoPrincipal* trasV) {return trasV->siguienteVert;}
+    inline vert steVert(vert trasV) {return trasV->siguienteVert;}
 };
 
 #endif // GRAFOLISTA_H

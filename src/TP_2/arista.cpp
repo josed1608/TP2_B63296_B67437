@@ -1,7 +1,5 @@
 #include "arista.h"
 
-
-
 Arista::Arista(vert v1, vert v2, int peso):
 	v1(v1),
 	v2(v2),

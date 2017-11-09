@@ -14,5 +14,5 @@ HEADERS += \
     colap.h \
     dicc.h \
     conjuntod.h \
-    algoritmos.h \
-    arista.h
+    arista.h \
+    algoritmos.h

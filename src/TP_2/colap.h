@@ -4,7 +4,7 @@
 #define MAXH 100
 
 template <typename DataType>
-class colaP
+class ColaP
 {
 
     struct Par
@@ -22,7 +22,7 @@ class colaP
 
 
 public:
-    colaP()
+	ColaP()
         :n{0}
     {
     }
@@ -78,7 +78,7 @@ public:
         return value;
     }
 
-   inline ~colaP(){n =0;}
+   inline ~ColaP(){n =0;}
 };
 
 #endif // COLAP_H

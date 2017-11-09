@@ -7,6 +7,7 @@
 #include "dicc.h"
 #include "conjuntod.h"
 #include "arista.h"
+#include "algoritmos.h"
 
 void probarAlgoritmos();
 

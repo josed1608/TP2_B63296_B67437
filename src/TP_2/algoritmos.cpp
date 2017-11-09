@@ -1,4 +1,5 @@
 #include "algoritmos.h"
+#include <climits>
 
 void kruskal(Grafo &grafo)
 {
@@ -40,4 +41,27 @@ void kruskal(Grafo &grafo)
 			vertices.unirConjuntos(vertices.conjuntoAlQuePertenece(actual.v1), vertices.conjuntoAlQuePertenece(actual.v2));
 		}
 	}
+}
+
+void floyd(Grafo& grafo)
+{
+	int mat [grafo.numVerts()][grafo.numVerts()];
+
+	for(int i = 0; i < grafo.numVerts(); ++i)
+	{
+		for(int j = 0; j < grafo.numVerts(); ++j)
+		{
+			if(i==j)
+				mat[i][j] = 0;
+			else
+				mat[i][j] = INT_MAX;
+		}
+	}
+
+	vert v = grafo.primerVert();
+	while(v != vertNulo)
+	{
+
+	}
+
 }

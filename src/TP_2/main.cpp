@@ -22,13 +22,6 @@ void impAristas(Grafo& grafo);
 
 int main()
 {
-     colaP<std::string> c=  colaP<std::string>();
-    c.agregar("a", 3);
-    c.sacar();
-
-
-
-/*
 	bool prueba = true;
 	while(prueba){
 		std::cout << "Bienvenido, para utilizar este programa de prueba, se le presentaran distintos menus con opciones indexadas por numeros y usted debera digitar el numero de "
@@ -46,17 +39,17 @@ int main()
 			case 3: verTiempos(); break;
 			default: prueba = false; break;
 		}
-    }*/
+    }
 	return 0;
 }
 
 void probarOperadores()
 {
-	bool prueba = true;
-	Grafo grafo = Grafo();
-	std::string etiq, etiqSalida, etiqEntrada, nuevaEtiq;
+    bool prueba = true;
+    Grafo grafo = Grafo();
+    std::string etiq, etiqSalida, etiqEntrada, nuevaEtiq;
     vert v;
-	int peso = 0;
+    int peso = 0;
     grafo.agregarVert("a");
     grafo.agregarVert("b");
     grafo.agregarVert("c");
@@ -66,16 +59,16 @@ void probarOperadores()
     grafo.agregarArista(4 , 3, 5);
 
 
-	while(prueba)
-	{
-		std::cout << "\t1.  Vaciar Grafo\n"
-					 "\t2.  Grafo vacio?\n"
-					 "\t3.  Agregar vertice\n"
-					 "\t4.  Agregar arista (no debe existir)\n"
-					 "\t5.  Modificar peso\n"
-					 "\t6.  Eliminar vertice (solo vertices aislados)\n"
-					 "\t7.  Eliminar arista (debe existir)\n"
-					 "\t8.  Modificar etiqueta\n"
+    while(prueba)
+    {
+        std::cout << "\t1.  Vaciar Grafo\n"
+                     "\t2.  Grafo vacio?\n"
+                     "\t3.  Agregar vertice\n"
+                     "\t4.  Agregar arista (no debe existir)\n"
+                     "\t5.  Modificar peso\n"
+                     "\t6.  Eliminar vertice (solo vertices aislados)\n"
+                     "\t7.  Eliminar arista (debe existir)\n"
+                     "\t8.  Modificar etiqueta\n"
                      "\t9.  Numero de vertices\n"
                      "\t10. Numero de aristas de salida (vertices adyacentes)\n"
                      "\t11. Vertices adyacentes\n"

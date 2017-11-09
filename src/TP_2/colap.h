@@ -50,7 +50,7 @@ public:
     DataType sacar()
     {
         //Sacado logico
-        DataType value = vectHeap[n].etiqueta;
+        Par value = vectHeap[1];
         //Sacado fisico
         vectHeap[1] = vectHeap[n];
         bool seguir = true;
@@ -75,7 +75,7 @@ public:
             }
         }
 
-        return value;
+        return value.etiqueta;
     }
 
    inline ~ColaP(){n =0;}

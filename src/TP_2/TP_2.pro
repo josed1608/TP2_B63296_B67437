@@ -5,7 +5,6 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     grafoMatriz.cpp \
-    colap.cpp \
     conjuntod.cpp \
     algoritmos.cpp \
     arista.cpp

@@ -22,6 +22,13 @@ void impAristas(Grafo& grafo);
 
 int main()
 {
+     colaP<std::string> c=  colaP<std::string>();
+    c.agregar("a", 3);
+    c.sacar();
+
+
+
+/*
 	bool prueba = true;
 	while(prueba){
 		std::cout << "Bienvenido, para utilizar este programa de prueba, se le presentaran distintos menus con opciones indexadas por numeros y usted debera digitar el numero de "
@@ -39,7 +46,7 @@ int main()
 			case 3: verTiempos(); break;
 			default: prueba = false; break;
 		}
-	}
+    }*/
 	return 0;
 }
 

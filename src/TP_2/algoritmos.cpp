@@ -10,11 +10,9 @@ void kruskal(Grafo &grafo)
 
 	//Creo los subconjuntos y acomodo las aristas en la cola de prioridad
 	vert v = grafo.primerVert();
-	int etiqueta = 1;
 	while(v != vertNulo)
 	{
-		vertices.agregarConjunto(std::to_string(etiqueta), v);
-		++etiqueta;
+		vertices.agregarConjunto(grafo.etiqueta(v), v);
 		vert vAdy = grafo.primerVertAdy(v);
 		while(vAdy != vertNulo)
 		{
@@ -22,9 +20,10 @@ void kruskal(Grafo &grafo)
 			if(!visitadas.pertenece(actual))
 			{
 				aristas.agregar(actual, actual.peso);
+				std::cout << "arista: (" << actual.v1->etiqueta << ", " << actual.v2->etiqueta << ", " << actual.peso << ") agregada\n";
 				visitadas.agregar(actual);
-				vAdy = grafo.steVertAdy(v, vAdy);
 			}
+			vAdy = grafo.steVertAdy(v, vAdy);
 		}
 		v = grafo.steVert(v);
 	}
@@ -32,6 +31,7 @@ void kruskal(Grafo &grafo)
 	while(!aristas.vacia() && aristasAgregadas != grafo.numVerts() - 1)
 	{
 		Arista actual = aristas.sacar();
+		std::cout << "analizando " << actual.v1->etiqueta << " " << actual.v2->etiqueta << std::endl;
 		if(vertices.conjuntoAlQuePertenece(actual.v1) != vertices.conjuntoAlQuePertenece(actual.v2))
 		{
 			++aristasAgregadas;

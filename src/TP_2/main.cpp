@@ -13,6 +13,8 @@ void probarAlgoritmos();
 
 void probarOperadores();
 
+void grafoPredet(Grafo& grafo);
+
 void verTiempos();
 
 vert buscarVertice(Grafo &grafo, std::string etiq);
@@ -200,7 +202,26 @@ void probarOperadores()
 
 void probarAlgoritmos()
 {
+	Grafo grafo;
+	grafoPredet(grafo);
+	kruskal(grafo);
+}
 
+void grafoPredet(Grafo& grafo)
+{
+	grafo.agregarVert("A");
+	grafo.agregarVert("B");
+	grafo.agregarVert("C");
+	grafo.agregarVert("D");
+	grafo.agregarVert("E");
+	grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "C"), 7);
+	grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "D"), 5);
+	grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "E"), 2);
+	grafo.agregarArista(buscarVertice(grafo,"B"), buscarVertice(grafo, "C"), 10);
+	grafo.agregarArista(buscarVertice(grafo,"B"), buscarVertice(grafo, "E"), 8);
+	grafo.agregarArista(buscarVertice(grafo,"C"), buscarVertice(grafo, "D"), 50);
+	grafo.agregarArista(buscarVertice(grafo,"C"), buscarVertice(grafo, "E"), 6);
+	grafo.agregarArista(buscarVertice(grafo,"D"), buscarVertice(grafo, "E"), 1);
 }
 
 void verTiempos()

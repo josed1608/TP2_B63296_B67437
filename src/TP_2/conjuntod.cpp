@@ -14,7 +14,7 @@ void ConjuntoD::vaciar()
 	NodoConjunto* c = primero;
 	while(c != nullptr)
 	{
-		NodoElemento* e = primero->primerElem;
+		NodoElemento* e = c->primerElem;
 		while(e != nullptr)
 		{
 			NodoElemento* borrable = e;
@@ -32,12 +32,14 @@ bool ConjuntoD::vacio()
 	return (primero == nullptr);
 }
 
+#include <iostream>
+
 std::string ConjuntoD::conjuntoAlQuePertenece(vert elem)
 {
 	NodoConjunto* c = primero;
 	while(c != nullptr)
 	{
-		NodoElemento* e = primero->primerElem;
+		NodoElemento* e = c->primerElem;
 		while(e != nullptr)
 		{
 			if(e->vertice == elem)
@@ -64,7 +66,7 @@ std::string ConjuntoD::unirConjuntos(std::string c1, std::string c2)
 	NodoConjunto* conjunto2 = primero;
 	NodoConjunto* anteriorC2 = nullptr; //para borrar a conjunto2
 	bool c1Encontrado = false, c2Encontrado = false;
-	while(!c1Encontrado && !c2Encontrado)
+	while(!c1Encontrado || !c2Encontrado)
 	{
 		if(conjunto1->etiqueta == c1)
 		{
@@ -84,7 +86,7 @@ std::string ConjuntoD::unirConjuntos(std::string c1, std::string c2)
 		{
 			conjunto1 = conjunto1->siguienteConjunto;
 		}
-		else
+		else if (!c1Encontrado && !c2Encontrado)
 		{
 			anteriorC2 = conjunto2;
 			conjunto2 = conjunto2->siguienteConjunto;
@@ -111,15 +113,10 @@ std::string ConjuntoD::unirConjuntos(std::string c1, std::string c2)
 	{
 		anteriorC2->siguienteConjunto = conjunto2->siguienteConjunto;
 	}
-	NodoConjunto* borrable = conjunto2;
-	NodoElemento* e = borrable->primerElem;
-	while(e != nullptr)
-	{
-		NodoElemento* borrable = e;
-		e = e->siguienteElemento;
-		delete borrable;
-	}
-	delete borrable;
+	delete conjunto2;
 
+	//std::cout << "Siguiente a primero " << primero->siguienteConjunto->etiqueta << std::endl;
+
+	//std::cout << "final: " << conjunto1->etiqueta << std::endl;
 	return conjunto1->etiqueta;
 }

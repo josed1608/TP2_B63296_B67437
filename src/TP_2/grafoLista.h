@@ -67,7 +67,7 @@ public:
 
 	inline int numVerts() {return nVerts;}
 
-    int numAristasSalida(vert v);
+	int numVertAdy(vert v);
 
     bool adyacente(vert v1, vert v2);
 

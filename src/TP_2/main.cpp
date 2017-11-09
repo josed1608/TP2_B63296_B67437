@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 
-//#include "grafoLista.h"
-#include "grafoMatriz.h"
+#include "grafoLista.h"
+//#include "grafoMatriz.h"
 #include "colap.h"
 #include "dicc.h"
 #include "conjuntod.h"
@@ -50,13 +50,13 @@ void probarOperadores()
     std::string etiq, etiqSalida, etiqEntrada, nuevaEtiq;
     vert v;
     int peso = 0;
-    grafo.agregarVert("a");
+	/*grafo.agregarVert("a");
     grafo.agregarVert("b");
     grafo.agregarVert("c");
     grafo.agregarVert("d");
     grafo.agregarArista(1 , 4, 2);
     grafo.agregarArista(1 , 3, 3);
-    grafo.agregarArista(4 , 3, 5);
+	grafo.agregarArista(4 , 3, 5);*/
 
 
     while(prueba)

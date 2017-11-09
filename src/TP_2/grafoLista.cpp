@@ -126,7 +126,7 @@ void Grafo::modificarEtiq(vert v, std::string etiq)
 	v->etiqueta = etiq;
 }
 
-int Grafo::numAristasSalida(vert v)
+int Grafo::numVertAdy(vert v)
 {
 	int contador = 0;
 	NodoSecundario* arista = v->primerAdy;
@@ -140,9 +140,16 @@ int Grafo::numAristasSalida(vert v)
 
 bool Grafo::adyacente(vert v1, vert v2)
 {
-     /// CAMBIAR ESTE OPERADOR BASICO
-    return false;
-    return this->numAristasSalida(v1) == 0;
+	NodoSecundario* arista = v1->primerAdy;
+	while(arista != nullptr)
+	{
+		if(arista->refListaPrincipal == v2)
+		{
+			return true;
+		}
+		arista = arista->siguienteAdy;
+	}
+	return false;
 }
 
 int Grafo::pesoArista(vert v1, vert v2)

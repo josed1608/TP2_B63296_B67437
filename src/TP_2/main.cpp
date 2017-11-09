@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 
-#include "grafoLista.h"
-//#include "grafoMatriz.h"
+//#include "grafoLista.h"
+#include "grafoMatriz.h"
 #include "colap.h"
 #include "dicc.h"
 #include "conjuntod.h"
@@ -39,38 +39,47 @@ int main()
 			case 3: verTiempos(); break;
 			default: prueba = false; break;
 		}
-	}
+    }
 	return 0;
 }
 
 void probarOperadores()
 {
-	bool prueba = true;
-	Grafo grafo = Grafo();
-	std::string etiq, etiqSalida, etiqEntrada, nuevaEtiq;
-	int peso = 0;
-	while(prueba)
-	{
-		std::cout << "\t1.  Vaciar Grafo\n"
-					 "\t2.  Grafo vacio?\n"
-					 "\t3.  Agregar vertice\n"
-					 "\t4.  Agregar arista (no debe existir)\n"
-					 "\t5.  Modificar peso\n"
-					 "\t6.  Eliminar vertice (solo vertices aislados)\n"
-					 "\t7.  Eliminar arista (debe existir)\n"
-					 "\t8.  Modificar etiqueta\n"
-					 "\t9.  Numero de aristas\n"
-					 "\t10. Numero de vertices\n"
-					 "\t11. Numero de aristas de salida (vertices adyacentes)\n"
-					 "\t12. Esta aislado el vertice?\n"
-					 "\t13. Peso de una arista\n"
-					 "\t14. Imprimir etiquetas del grafo\n"
-					 "\t15. Imprimir vertices del grafo\n"
-					 "\t16. Primer vertice\n"
-					 "\t17. Siguiente vertice\n"
-					 "\t18. Primer vertice adyacente\n"
-					 "\t19. Siguiente vertice adyancente\n"
-					 "\t20. Volver al menu principal\n";
+    bool prueba = true;
+    Grafo grafo = Grafo();
+    std::string etiq, etiqSalida, etiqEntrada, nuevaEtiq;
+    vert v;
+    int peso = 0;
+    grafo.agregarVert("a");
+    grafo.agregarVert("b");
+    grafo.agregarVert("c");
+    grafo.agregarVert("d");
+    grafo.agregarArista(1 , 4, 2);
+    grafo.agregarArista(1 , 3, 3);
+    grafo.agregarArista(4 , 3, 5);
+
+
+    while(prueba)
+    {
+        std::cout << "\t1.  Vaciar Grafo\n"
+                     "\t2.  Grafo vacio?\n"
+                     "\t3.  Agregar vertice\n"
+                     "\t4.  Agregar arista (no debe existir)\n"
+                     "\t5.  Modificar peso\n"
+                     "\t6.  Eliminar vertice (solo vertices aislados)\n"
+                     "\t7.  Eliminar arista (debe existir)\n"
+                     "\t8.  Modificar etiqueta\n"
+                     "\t9.  Numero de vertices\n"
+                     "\t10. Numero de aristas de salida (vertices adyacentes)\n"
+                     "\t11. Vertices adyacentes\n"
+                     "\t12. Peso de una arista\n"
+                     "\t13. Imprimir vertices del grafo\n"
+                     "\t14. Imprimir aristas del grafo\n"
+                     "\t15. Primer vertice\n"
+                     "\t16. Siguiente vertice\n"
+                     "\t17. Primer vertice adyacente\n"
+                     "\t18. Siguiente vertice adyancente\n"
+                     "\t19. Volver al menu principal\n";
 		int opcion = 0;
 		std::cin >> opcion;
 		switch (opcion)
@@ -79,7 +88,7 @@ void probarOperadores()
 			grafo.vaciar();
 			break;
 		case 2:
-			grafo.vacio() == true ? std::cout <<  "vacio\n" : std::cout <<  "no vacio\n";
+            (grafo.vacio() == true) ? std::cout <<  "vacio\n" : std::cout <<  "no vacio\n";
 			break;
 		case 3:
 			std::cout << "Digite la etiqueta del vertice que desea agregar\n";
@@ -123,60 +132,63 @@ void probarOperadores()
 			std::cin >> nuevaEtiq;
 			grafo.modificarEtiq(buscarVertice(grafo,etiq), nuevaEtiq);
 			break;
-		case 9:
-			std::cout << grafo.numAristas() << std::endl;
+        case 9:
+            std:: cout << grafo.numVerts() << std::endl;
 			break;
-		case 10:
-			std:: cout << grafo.numVerts() << std::endl;
-			break;
-		case 11:
+        case 10:
 			std::cout << "Digite la etiqueta del vertice al que desea conocer la cantidad de vertices adyacentes\n";
 			std::cin >> etiq;
-			grafo.numAristasSalida(buscarVertice(grafo,etiq));
+            std:: cout << grafo.numVertAdy(buscarVertice(grafo,etiq)) <<std::endl;
 			break;
-		case 12:
-			std::cout << "Digite la etiqueta del vertice que desea conocer si esta aislado\n";
-			std::cin >> etiq;
-			(grafo.estaAislado(buscarVertice(grafo,etiq)) == true )? std::cout << "Si\n" : std::cout << "No\n";
+        case 11:
+            std::cout << "Digite la etiqueta del vertice que de los vertices que se desea ver si son adyacentes\n";
+            std::cin >> etiq;
+            std::cout << "Digite la etiqueta del  otro vertice\n";
+            std:: cin >> nuevaEtiq;
+            (grafo.adyacente(buscarVertice(grafo,etiq), buscarVertice(grafo,nuevaEtiq)) == true )? std::cout << "Si\n" : std::cout << "No\n";
 			break;
-		case 13:
+        case 12:
 			std::cout << "Digite la etiqueta del vertice de salida\n";
 			std::cin >> etiqSalida;
 			std::cout << "Digite la etiqueta del vertice de entrada\n";
 			std::cin >> etiqEntrada;
 			std::cout << grafo.pesoArista(buscarVertice(grafo,etiqSalida), buscarVertice(grafo,etiqEntrada)) << std::endl;
 			break;
-		case 14:
+        case 13:
 			impEtiquetas(grafo);
 			break;
-		case 15:
+        case 14:
 			impAristas(grafo);
 			break;
-		case 16:
-			std::cout << "El primer vertice posee etiqueta: " << grafo.etiqueta(grafo.primerVert()) << std::endl;
+        case 15:
+            if((v= grafo.primerVert())!= vertNulo)
+                std::cout << "El primer vertice posee etiqueta: " << grafo.etiqueta(v) << std::endl;
 			break;
-		case 17:
+        case 16:
 			std::cout << "Digite la etiqueta del vertice que desea conocer su siguiente\n";
 			std::cin >> etiq;
-			if(grafo.steVert(buscarVertice(grafo, etiq)) != vertNulo)
-				std::cout << "La etiquete del siguiente vertice es: " << grafo.etiqueta(grafo.steVert(buscarVertice(grafo, etiq))) << std::endl;
+            if((v=grafo.steVert(buscarVertice(grafo, etiq))) != vertNulo)
+                std::cout << "La etiquete del siguiente vertice es: " << grafo.etiqueta(v) << std::endl;
+            else
+                std::cout << "No tiene vertice siguiente"<< std::endl;
 			break;
-		case 18:
+        case 17:
 			std::cout << "Digite la etiqueta del vertice que desea conocer su primer adyacente\n";
 			std::cin >> etiq;
-			if(grafo.primerVertAdy(buscarVertice(grafo, etiq)) != vertNulo)
-				std::cout << "La etiquete del primer vertice adyacente es: " << grafo.etiqueta(grafo.primerVertAdy(buscarVertice(grafo, etiq))) << std::endl;
+            if((v=grafo.primerVertAdy(buscarVertice(grafo, etiq))) != vertNulo)
+                std::cout << "La etiquete del primer vertice adyacente es: " << grafo.etiqueta(v) << std::endl;
+            else
+                std::cout <<"No tiene ningun vertice adyacente"<< std::endl;
 			break;
-		case 19:
-			std::cout << "Digite la etiqueta del vertice que desea conocer su siguiente vertice adyacente\n";
-			std::cin >> etiqEntrada;
+        case 18:
+            std::cout << "Digite la etiqueta del vertice origen de ver si tiene un siguiente vertice adyacente\n";
+            std::cin >> etiq;
 			std::cout << "Digite la etiqueta del vertice tras el cual desea otro adyacente\n";
 			std::cin >> etiqEntrada;
-			if (grafo.steVertAdy(buscarVertice(grafo, etiqEntrada), buscarVertice(grafo, etiqSalida)) != vertNulo){
-				std::cout << "hola";
-				std::cout << "La etiquete del siguiente vertice es: " << grafo.etiqueta(grafo.steVertAdy(buscarVertice(grafo, etiqEntrada), buscarVertice(grafo, etiqSalida))) << std::endl;
-
-			}
+            if ((v= grafo.steVertAdy(buscarVertice(grafo, etiq), buscarVertice(grafo, etiqEntrada)) ) != vertNulo)
+                std::cout << "La etiquete del siguiente vertice es: " << grafo.etiqueta(v) << std::endl;
+            else
+                std::cout <<"No hay siguiente"<< std::endl;
 			break;
 		default:
 			prueba = false;

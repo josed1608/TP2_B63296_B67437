@@ -15,7 +15,7 @@ Grafo::~Grafo()
 
 void Grafo::vaciar()
 {
-	NodoPrincipal* vertice = primero;
+    vert vertice = primero;
 	while(vertice != nullptr)
 	{
 		NodoSecundario* arista = vertice->primerAdy;
@@ -25,7 +25,7 @@ void Grafo::vaciar()
 			arista = arista->siguienteAdy;
 			delete borrable;
 		}
-		NodoPrincipal* borrable = vertice;
+        vert borrable = vertice;
 		vertice = vertice->siguienteVert;
 		delete borrable;
 	}
@@ -38,14 +38,14 @@ NodoPrincipal *Grafo::agregarVert(std::string etiq)
 	return primero;
 }
 
-void Grafo::agregarArista(NodoPrincipal *v1, NodoPrincipal *v2, int peso)
+void Grafo::agregarArista(vert v1, vert v2, int peso)
 {
 	v1->primerAdy = new NodoSecundario(peso, v2, v1->primerAdy);
 	v2->primerAdy = new NodoSecundario(peso, v1, v2->primerAdy);
 	nAristas++;
 }
 
-void Grafo::modificarPeso(NodoPrincipal *v1, NodoPrincipal *v2, int peso)
+void Grafo::modificarPeso(vert v1,vert v2, int peso)
 {
 	NodoSecundario* arista = v1->primerAdy;
 	while(arista != nullptr && arista->refListaPrincipal != v2)
@@ -62,7 +62,7 @@ void Grafo::modificarPeso(NodoPrincipal *v1, NodoPrincipal *v2, int peso)
 	arista->peso = peso;
 }
 
-void Grafo::eliminarVert(NodoPrincipal *v)
+void Grafo::eliminarVert(vert v)
 {
 	if(primero == v)
 	{
@@ -70,7 +70,7 @@ void Grafo::eliminarVert(NodoPrincipal *v)
 	}
 	else
 	{
-		NodoPrincipal* vertice = primero;
+        vert vertice = primero;
 		while(vertice->siguienteVert != v)
 		{
 			vertice = vertice->siguienteVert;
@@ -81,7 +81,7 @@ void Grafo::eliminarVert(NodoPrincipal *v)
 	nVerts--;
 }
 
-void Grafo::eliminarArista(NodoPrincipal *v1, NodoPrincipal *v2)
+void Grafo::eliminarArista(vert v1, vert v2)
 {
 	if(v1->primerAdy->refListaPrincipal == v2)
 	{
@@ -121,12 +121,12 @@ void Grafo::eliminarArista(NodoPrincipal *v1, NodoPrincipal *v2)
 	nAristas--;
 }
 
-void Grafo::modificarEtiq(NodoPrincipal *v, std::string etiq)
+void Grafo::modificarEtiq(vert v, std::string etiq)
 {
 	v->etiqueta = etiq;
 }
 
-int Grafo::numAristasSalida(NodoPrincipal *v)
+int Grafo::numAristasSalida(vert v)
 {
 	int contador = 0;
 	NodoSecundario* arista = v->primerAdy;
@@ -138,12 +138,14 @@ int Grafo::numAristasSalida(NodoPrincipal *v)
 	return contador;
 }
 
-bool Grafo::estaAislado(NodoPrincipal *v)
+bool Grafo::adyacente(vert v1, vert v2)
 {
-	return this->numAristasSalida(v) == 0;
+     /// CAMBIAR ESTE OPERADOR BASICO
+    return false;
+    return this->numAristasSalida(v1) == 0;
 }
 
-int Grafo::pesoArista(NodoPrincipal *v1, NodoPrincipal *v2)
+int Grafo::pesoArista(vert v1, vert v2)
 {
 	NodoSecundario* arista = v1->primerAdy;
 	while(arista != nullptr && arista->refListaPrincipal != v2)
@@ -153,7 +155,7 @@ int Grafo::pesoArista(NodoPrincipal *v1, NodoPrincipal *v2)
 	return arista->peso;
 }
 
-NodoPrincipal *Grafo::steVertAdy(NodoPrincipal *deV1, NodoPrincipal *trasV2)
+NodoPrincipal *Grafo::steVertAdy(vert deV1, vert trasV2)
 {
 	NodoSecundario* arista = deV1->primerAdy;
 	while(arista != nullptr && arista->refListaPrincipal != trasV2)

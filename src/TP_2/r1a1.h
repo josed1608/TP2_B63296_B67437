@@ -3,8 +3,8 @@
 
 #include <iostream>
 
-#include "grafoLista.h"
-//#include "grafoMatriz.h"
+//#include "grafoLista.h"
+#include "grafoMatriz.h"
 
 class R1a1
 {

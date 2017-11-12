@@ -120,7 +120,7 @@ void R1a1::imprimirLista()
 	NodoLista* rel = primero;
 	while(rel != nullptr)
 	{
-		std::cout << rel->d->etiqueta << ", " << rel->c << std::endl;
+		std::cout << rel->d << ", " << rel->c << std::endl;
 		rel = rel->siguiente;
 	}
 }

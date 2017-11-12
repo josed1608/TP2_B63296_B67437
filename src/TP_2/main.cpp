@@ -205,6 +205,7 @@ void probarAlgoritmos()
 	Grafo grafo;
 	grafoPredet(grafo);
 	kruskal(grafo);
+	floyd(grafo);
 }
 
 void grafoPredet(Grafo& grafo)

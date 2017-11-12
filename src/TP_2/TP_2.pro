@@ -7,7 +7,8 @@ SOURCES += main.cpp \
     grafoLista.cpp \
     conjuntod.cpp \
     algoritmos.cpp \
-    arista.cpp
+    arista.cpp \
+    r1a1.cpp
 
 HEADERS += \
     grafoLista.h \
@@ -15,4 +16,5 @@ HEADERS += \
     dicc.h \
     conjuntod.h \
     arista.h \
-    algoritmos.h
+    algoritmos.h \
+    r1a1.h

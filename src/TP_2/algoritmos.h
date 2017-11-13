@@ -5,8 +5,8 @@
 #include <climits>
 #include <iomanip>
 
-//#include "grafoLista.h"
-#include "grafoMatriz.h"
+#include "grafoLista.h"
+//#include "grafoMatriz.h"
 #include "colap.h"
 #include "dicc.h"
 #include "conjuntod.h"
@@ -16,7 +16,9 @@
 
 void kruskal(Grafo& grafo);
 void floyd(Grafo& grafo);
-void imprimirCaminoFloyd(int deI, int aJ, int **mat, Grafo &grafo, R1a1 &rel);
-void imprimirMatrizFloyd(int** mat, int nVerts, Grafo &grafo, R1a1 &rel);
+void imprimirMatrizFloyd(int** mat, int nVerts, Grafo &grafo, R1a1<vert, int> &rel);
+void copiar(Grafo& dest, Grafo& org);
+bool iguales(Grafo& g1, Grafo& g2);
+vert buscarVertice(Grafo &grafo, std::string etiq);
 
 #endif // ALGORITMOS_H

@@ -29,6 +29,9 @@ void Grafo::vaciar()
 		vertice = vertice->siguienteVert;
 		delete borrable;
 	}
+    nVerts = 0;
+    nAristas = 0;
+    primero = nullptr;
 }
 
 NodoPrincipal *Grafo::agregarVert(std::string etiq)
@@ -159,7 +162,9 @@ int Grafo::pesoArista(vert v1, vert v2)
 	{
 		arista = arista->siguienteAdy;
 	}
-	return arista->peso;
+    if(arista != nullptr)
+        return arista->peso;
+    return -1;
 }
 
 NodoPrincipal *Grafo::steVertAdy(vert deV1, vert trasV2)

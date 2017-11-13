@@ -4,14 +4,13 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    grafoMatriz.cpp \
+    grafoLista.cpp \
     conjuntod.cpp \
     algoritmos.cpp \
-    arista.cpp \
-    r1a1.cpp
+    arista.cpp
 
 HEADERS += \
-    grafoMatriz.h \
+    grafoLista.h \
     colap.h \
     dicc.h \
     conjuntod.h \

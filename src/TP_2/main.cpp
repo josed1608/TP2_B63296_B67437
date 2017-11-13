@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 
-//#include "grafoLista.h"
-#include "grafoMatriz.h"
+#include "grafoLista.h"
+//#include "grafoMatriz.h"
 #include "colap.h"
 #include "dicc.h"
 #include "conjuntod.h"
@@ -16,8 +16,6 @@ void probarOperadores();
 void grafoPredet(Grafo& grafo);
 
 void verTiempos();
-
-vert buscarVertice(Grafo &grafo, std::string etiq);
 
 void impEtiquetas(Grafo& grafo);
 
@@ -204,8 +202,13 @@ void probarAlgoritmos()
 {
 	Grafo grafo;
 	grafoPredet(grafo);
-	kruskal(grafo);
 	floyd(grafo);
+	kruskal(grafo);
+
+    Grafo copiador;
+    copiar(copiador, grafo);
+    impAristas(copiador);
+    impEtiquetas(copiador);
 }
 
 void grafoPredet(Grafo& grafo)
@@ -228,16 +231,6 @@ void grafoPredet(Grafo& grafo)
 void verTiempos()
 {
 
-}
-
-vert buscarVertice(Grafo& grafo, std::string etiq)
-{
-	vert vertice = grafo.primerVert();
-	while(vertice != vertNulo && grafo.etiqueta(vertice) != etiq)
-	{
-		vertice = grafo.steVert(vertice);
-	}
-	return vertice;
 }
 
 void impEtiquetas(Grafo& grafo)

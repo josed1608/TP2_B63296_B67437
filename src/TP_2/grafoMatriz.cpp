@@ -20,12 +20,10 @@ vert Grafo::agregarVert(std::string e)
     ++n;
     arrEtiq[n] =e;
     // Coloca que no tiene aristas con los demas vertices
-    for(int i =1; i< n;++i)
+    for(int i =1; i<= n;++i)
     {
         matPeso[n][i]= matPeso[i][n] = PESONULL;
     }
-    //Se pone como el peso en la diagonal de posicion un 0
-    matPeso[n][n]= 0;
     return n;
 }
 
@@ -58,7 +56,7 @@ vert Grafo::primerVertAdy(vert v)
     for(int i =1; i<=n; ++i)
     {
         //Si se encuentra algo que no sea ni peso nulo ni el mismo(0), significa que hay arista.
-        if(matPeso[v][i]>0)
+        if(matPeso[v][i]!= vertNulo)
             return i;
     }
     return vertNulo;
@@ -69,7 +67,7 @@ vert Grafo::steVertAdy(vert v, vert ady)
     for(int i =ady+1; i<=n;++i )
     {
         //Si se encuentra algo que no sea ni peso nulo ni el mismo(0), significa que hay arista.
-        if(matPeso[v][i]>0)
+        if(matPeso[v][i]!= vertNulo)
             return i;
     }
     return vertNulo;
@@ -81,7 +79,7 @@ int Grafo::numVertAdy(vert v)
     for(int i =1; i<=n; ++i)
     {
         //Si se encuentra algo que no sea ni peso nulo ni el mismo(0), significa que hay arista.
-        if(matPeso[v][i] >0)
+        if(matPeso[v][i] !=vertNulo)
            ++total;
     }
     return total;

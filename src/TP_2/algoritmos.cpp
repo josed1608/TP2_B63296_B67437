@@ -165,9 +165,9 @@ void copiar(Grafo &dest, Grafo &org)
 
 bool iguales(Grafo &g1, Grafo &g2)
 {
-    if(g1.numVerts() != g2.numVerts() || g1.numAristas() != g2.numAristas()){
-        return false;
-    }
+    //if(g1.numVerts() != g2.numVerts() || g1.numAristas() != g2.numAristas()){
+        //return false;
+    //}
 
     //Veo si existen vertices con las mismas etiquetas
     R1a1<vert, vert> rel;

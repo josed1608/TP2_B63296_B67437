@@ -47,7 +47,7 @@ public:
     inline peso pesoArista(vert v1, vert v2){return matPeso[v1][v2];}
 
     // Como no hay ciclos, no se incluye el caso de ser adyacente a uno mismo.
-    inline bool adyacente(vert v1, vert v2){return (matPeso[v1][v2]>0)? true: false;}
+    inline bool adyacente(vert v1, vert v2){return (matPeso[v1][v2]!=vertNulo)? true: false;}
 
     // Si no hay vertices, devuelve nulo. En caso contrario devuelve la primera posicion.
     inline vert primerVert(){return (n==0)? vertNulo: 1;}

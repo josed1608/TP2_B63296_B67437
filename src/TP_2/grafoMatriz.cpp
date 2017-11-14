@@ -29,7 +29,7 @@ vert Grafo::agregarVert(std::string e)
 
 void Grafo::eliminarVert(vert v)
 {
-    //mueve hasta llegar al final en el vector de etiquetas
+    // Mueve hasta llegar al final en el vector de etiquetas
     for(int i=v+1; i<=n ;++i)
     {
         arrEtiq[i-1] = arrEtiq[i];
@@ -37,12 +37,12 @@ void Grafo::eliminarVert(vert v)
     // Mueve toda las matriz de pesos
     for(int i= v+1, j=1; i <=n ; ++i)
     {
-        //mueve la columna
+        // Mueve la columna
         for(j=1; j<=n; ++j)
         {
             matPeso[i-1][j] = matPeso[i][j];
         }
-        //mueve la fila
+        // Mueve la fila
         for(j=1; j<=n; ++j)
         {
             matPeso[j][i-1] = matPeso[j][i];
@@ -55,7 +55,7 @@ vert Grafo::primerVertAdy(vert v)
 {
     for(int i =1; i<=n; ++i)
     {
-        //Si se encuentra algo que no sea ni peso nulo ni el mismo(0), significa que hay arista.
+        //Si se encuentra algo que no sea ni peso nulo, significa que hay arista.
         if(matPeso[v][i]!= vertNulo)
             return i;
     }
@@ -66,7 +66,7 @@ vert Grafo::steVertAdy(vert v, vert ady)
 {
     for(int i =ady+1; i<=n;++i )
     {
-        //Si se encuentra algo que no sea ni peso nulo ni el mismo(0), significa que hay arista.
+        //Si se encuentra algo que no sea ni peso nulo, significa que hay arista.
         if(matPeso[v][i]!= vertNulo)
             return i;
     }
@@ -78,7 +78,7 @@ int Grafo::numVertAdy(vert v)
     int total =0;
     for(int i =1; i<=n; ++i)
     {
-        //Si se encuentra algo que no sea ni peso nulo ni el mismo(0), significa que hay arista.
+        //Si se encuentra algo que no sea ni peso nulo, significa que hay arista.
         if(matPeso[v][i] !=vertNulo)
            ++total;
     }

@@ -204,10 +204,9 @@ void probarAlgoritmos()
 {
 	Grafo grafo;
 	grafoPredet(grafo);
-    bool prueba = false;
+    bool prueba = true;
     int opcion;
     std::string etiq;
-    dijkstra (grafo, 1);
     while(prueba)
     {
         std::cout << "\t1.  Dijkstra\n"

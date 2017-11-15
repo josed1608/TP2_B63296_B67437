@@ -72,7 +72,7 @@ std::string ConjuntoD::unirConjuntos(std::string c1, std::string c2)
 		{
 			c1Encontrado = true;
 		}
-		else if(conjunto2->etiqueta == c2)
+		if(conjunto2->etiqueta == c2)
 		{
 			c2Encontrado = true;
 		}

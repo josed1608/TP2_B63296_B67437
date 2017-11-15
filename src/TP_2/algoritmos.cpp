@@ -21,7 +21,6 @@ void kruskal(Grafo &grafo)
 			if(!visitadas.pertenece(actual))
 			{
 				aristas.agregar(actual, actual.peso);
-				//std::cout << "arista: (" << actual.v1->etiqueta << ", " << actual.v2->etiqueta << ", " << actual.peso << ") agregada\n";
 				visitadas.agregar(actual);
 			}
 			vAdy = grafo.steVertAdy(v, vAdy);
@@ -32,7 +31,6 @@ void kruskal(Grafo &grafo)
 	while(!aristas.vacia() && aristasAgregadas != grafo.numVerts() - 1)
 	{
 		Arista actual = aristas.sacar();
-		//std::cout << "analizando " << actual.v1->etiqueta << " " << actual.v2->etiqueta << std::endl;
 		if(vertices.conjuntoAlQuePertenece(actual.v1) != vertices.conjuntoAlQuePertenece(actual.v2))
 		{
 			++aristasAgregadas;
@@ -84,25 +82,23 @@ void floyd(Grafo& grafo)
 		v = grafo.steVert(v);
 	}
 
-	for(int k = 0; k < grafo.numVerts(); ++k)
+	imprimirMatrizFloyd(mat, grafo.numVerts(), grafo, rel);
+
+	int n = grafo.numVerts();
+	for(int k = 0; k < n; ++k)
 	{
-		for(int i = 0; i < grafo.numVerts(); ++i)
+		for(int i = 0; i < n; ++i)
 		{
-			for(int j = 0; j < grafo.numVerts(); ++j)
+			for(int j = 0; j < n; ++j)
 			{
-				if(mat[i][j] > mat[i][k] + mat[k][j])
-					mat[i][j] = mat[i][k] + mat[k][j];
+				if(mat[i][k] != INF && mat[k][j] != INF)
+				{
+					if(mat[i][j] > mat[i][k] + mat[k][j])
+						mat[i][j] = mat[i][k] + mat[k][j];
+				}
 			}
 		}
 	}
-
-    /*for(int deI = 0; deI < grafo.numVerts(); ++deI)
-	{
-		for(int aJ = deI+1; aJ < grafo.numVerts(); ++aJ)
-		{
-			imprimirCaminoFloyd(deI, aJ, mat, grafo, rel);
-		}
-    }*/
 
 	imprimirMatrizFloyd(mat, grafo.numVerts(), grafo, rel);
 }
@@ -114,16 +110,16 @@ void imprimirMatrizFloyd(int **mat, int nVerts, Grafo& grafo, R1a1<vert, int>& r
 	std::cout << "     ";
 	for(int deI = 0; deI < nVerts; ++deI)
 	{
-		std::cout << std::setw(5) << grafo.etiqueta(rel.preImagen(deI));
+		std::cout << std::setw(10) << grafo.etiqueta(rel.preImagen(deI));
 	}
 	std::cout << std::endl;
 
 	for(int deI = 0; deI < nVerts; ++deI)
 	{
-		std::cout << std::setw(5) << grafo.etiqueta(rel.preImagen(deI));
+		std::cout << std::setw(10) << grafo.etiqueta(rel.preImagen(deI));
 		for(int aJ = 0; aJ < nVerts; ++aJ)
 		{
-			std::cout << std::setw(5) << mat[deI][aJ];
+			std::cout << std::setw(10) << mat[deI][aJ];
 		}
 		std::cout <<std::endl;
 	}

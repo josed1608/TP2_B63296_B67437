@@ -242,7 +242,7 @@ void grafoPredet(Grafo& grafo)
 	grafo.agregarVert("C");
     grafo.agregarVert("D");
     grafo.agregarVert("E");
-    grafo.agregarVert("F");
+	//grafo.agregarVert("F");
     grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "C"), 7);
     grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "D"), 5);
     grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "E"), 2);

@@ -75,7 +75,7 @@ public:
 
     int pesoArista(vert v1, vert v2);
 
-    inline vert primerVertAdy(vert v) {return v->primerAdy->refListaPrincipal;}
+	inline vert primerVertAdy(vert v) {return v->primerAdy == nullptr ? nullptr : v->primerAdy->refListaPrincipal;}
 
     vert steVertAdy(vert deV1, vert trasV2);
 

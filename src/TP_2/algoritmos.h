@@ -19,6 +19,9 @@ void floyd(Grafo& grafo);
 void imprimirMatrizFloyd(int** mat, int nVerts, Grafo &grafo, R1a1<vert, int> &rel);
 void copiar(Grafo& dest, Grafo& org);
 bool iguales(Grafo& g1, Grafo& g2);
+void dijkstra(Grafo &g, vert v);
+void prim(Grafo & g);
+void vendedor(Grafo &g);
 vert buscarVertice(Grafo &grafo, std::string etiq);
 
 #endif // ALGORITMOS_H

@@ -204,13 +204,36 @@ void probarAlgoritmos()
 {
 	Grafo grafo;
 	grafoPredet(grafo);
-	floyd(grafo);
-	kruskal(grafo);
-
-    Grafo copiador;
-    copiar(copiador, grafo);
-    impAristas(copiador);
-    impEtiquetas(copiador);
+    bool prueba = false;
+    int opcion;
+    std::string etiq;
+    dijkstra (grafo, 1);
+    while(prueba)
+    {
+        std::cout << "\t1.  Dijkstra\n"
+                     "\t2.  Floyd\n"
+                     "\t3.  Prim\n"
+                     "\t4.  Kruskal\n"
+                     "\t5.  Copiar grafo\n"
+                     "\t6.  Iguales grafo\n"
+                     "\t7.  Problema del vendedor\n"
+                     "\t8.  Volver al menu principa\n";
+        std::cin >> opcion;
+        switch (opcion)
+        {
+        case 1:
+            std::cout << "Digita la etiquta del vertice donde se va a calcular Dijkstra.\n";
+            std::cin >> etiq;
+            dijkstra (grafo, buscarVertice(grafo,etiq)); break;
+        case 2: floyd(grafo); break;
+        case 3: prim(grafo); break;
+        case 4: kruskal(grafo); break;
+        case 5: break;
+        case 6: break;
+        case 7: vendedor(grafo); break;
+        default: prueba = false; break;
+        }
+    }
 }
 
 void grafoPredet(Grafo& grafo)
@@ -218,16 +241,17 @@ void grafoPredet(Grafo& grafo)
 	grafo.agregarVert("A");
 	grafo.agregarVert("B");
 	grafo.agregarVert("C");
-	grafo.agregarVert("D");
-	grafo.agregarVert("E");
-	grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "C"), 7);
-	grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "D"), 5);
-	grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "E"), 2);
-	grafo.agregarArista(buscarVertice(grafo,"B"), buscarVertice(grafo, "C"), 10);
-	grafo.agregarArista(buscarVertice(grafo,"B"), buscarVertice(grafo, "E"), 8);
-	grafo.agregarArista(buscarVertice(grafo,"C"), buscarVertice(grafo, "D"), 50);
-	grafo.agregarArista(buscarVertice(grafo,"C"), buscarVertice(grafo, "E"), 6);
-	grafo.agregarArista(buscarVertice(grafo,"D"), buscarVertice(grafo, "E"), 1);
+    grafo.agregarVert("D");
+    grafo.agregarVert("E");
+    grafo.agregarVert("F");
+    grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "C"), 7);
+    grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "D"), 5);
+    grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "E"), 2);
+    grafo.agregarArista(buscarVertice(grafo,"B"), buscarVertice(grafo, "C"), 10);
+    grafo.agregarArista(buscarVertice(grafo,"B"), buscarVertice(grafo, "E"), 8);
+    grafo.agregarArista(buscarVertice(grafo,"C"), buscarVertice(grafo, "D"), 50);
+    grafo.agregarArista(buscarVertice(grafo,"C"), buscarVertice(grafo, "E"), 6);
+    grafo.agregarArista(buscarVertice(grafo,"D"), buscarVertice(grafo, "E"), 1);
 }
 
 void verTiempos()

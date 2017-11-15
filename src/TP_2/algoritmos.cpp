@@ -1,4 +1,5 @@
 #include "algoritmos.h"
+#define INF INT_MAX
 
 void kruskal(Grafo &grafo)
 {
@@ -57,7 +58,7 @@ void floyd(Grafo& grafo)
 			if(i==j)
 				mat[i][j] = 0;
 			else
-				mat[i][j] = INT_MAX;
+                mat[i][j] = INF;
 		}
 	}
 
@@ -216,4 +217,83 @@ vert buscarVertice(Grafo& grafo, std::string etiq)
         vertice = grafo.steVert(vertice);
     }
     return vertice;
+}
+
+void dijkstra(Grafo &g, vert v)
+{
+    int tamG =g.numVerts(), pMen, cPes, iAct, dist [tamG];
+    vert prev[tamG], vAct = g.primerVert(), vTemp, vMen;
+    R1a1 <vert, int> r;
+    Dicc <vert> d;
+
+    for(int index =0; index < tamG; ++index)
+    {
+        // Dejar en peso lo maximo
+        dist[index] = INF;
+        // Dejar como anterior vacio
+        prev[index] = vertNulo;
+        // Hacer la relacion con el vertice y la posicion de indice
+        r.agregarRel(vAct, index);
+        vAct = g.steVert(vAct);
+    }
+    //Peso para el primer vertice es 0
+    dist [r.imagen(v)] =0;
+    for(int tam = tamG; tam !=0 ; --tam)
+    {
+        pMen= INT_MAX;
+        //Coger el vertice mas peque/o no visitado
+        for(int index =0; index<tamG; ++index )
+        {
+            if(pMen > dist[index] && !d.pertenece(vTemp =r.preImagen(index)))
+            {
+                pMen = dist[index];
+                vMen = vTemp;
+            }
+        }
+        d.agregar(vMen);
+        // Ver si existe un camino mas corto. Ignora los que tienen infinito.
+        if(pMen != INF)
+        {
+            for (vert hijoAct=g.primerVertAdy(vMen); hijoAct!=vertNulo ; hijoAct = g.steVertAdy(vMen, hijoAct))
+            {
+                // Si existe un camino mas corto, actualizar el anterior y la distancia
+                if((cPes = pMen + g.pesoArista( vMen,hijoAct )) < dist[iAct = r.imagen(hijoAct)])
+                {
+                    dist[iAct] = cPes;
+                    prev[iAct] = vMen;
+                }
+            }
+        }
+    }
+
+    std:: cout << "Los caminos mas cortos para cada vertice es:\n";
+    // Imprime los resultados
+    for(vAct =g.primerVert() ;vAct != vertNulo ;vAct = g.steVert(vAct))
+    {
+        iAct= r.imagen(vAct);
+        if(dist[iAct] == INT_MAX)
+            std:: cout << "No existe camino entre "<< g.etiqueta(v)  <<" y " << g.etiqueta(vAct) << "\n";
+        else
+        {
+            std:: cout << "Camino de "<< g.etiqueta(v)  <<" a " << g.etiqueta(vAct) <<", con peso "<< dist[iAct] <<": "<< g.etiqueta(vAct)<< " ";
+            // Hasta que se llegue al destino
+            while(prev[iAct] !=vertNulo)
+            {
+                std:: cout << g.etiqueta((prev[iAct])) << " ";
+                iAct = r.imagen(prev[iAct]);
+            }
+            std:: cout << std::endl ;
+        }
+    }
+
+}
+
+void prim(Grafo &g)
+{
+
+}
+
+void vendedor(Grafo &g)
+{
+
 }

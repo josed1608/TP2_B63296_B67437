@@ -286,7 +286,52 @@ void dijkstra(Grafo &g, vert v)
 
 void prim(Grafo &g)
 {
-
+    int tamG = g.numVerts(), weight[tamG], prev [tamG], pMen;
+    R1a1 <vert , int> rel ;
+    Dicc <vert> d;
+    vert vAct =g.primerVert(), vTemp;
+    for(int index=0; index < tamG; ++index)
+    {
+        weight[index] = INF;
+        rel.agregarRel(vAct, index);
+        vAct = g.steVert(vAct);
+    }
+    prev[0]=-1;
+    weight[0] =0;
+    for(int index=0, iAct; index < tamG; ++index)
+    {
+        pMen=INF;
+        //Coger el vertice mas peque/o
+        for(int indexP =0; indexP<tamG; ++indexP )
+        {
+            // Si se encuentra un peso mas peque/o, escoger este como el peso mas peque/o actual
+            if(pMen > weight[indexP] && !d.pertenece(vTemp =rel.preImagen(indexP)))
+            {
+                vAct = vTemp;
+                pMen= weight[indexP];
+            }
+        }
+        // Agregar a que es usado y cual es el indice actual del vertice
+        d.agregar(vAct);
+        iAct = rel.imagen(vAct);
+        // Para todos los vertices adyacentes al actual
+        for (vert hijoAct=g.primerVertAdy(vAct); hijoAct!=vertNulo ; hijoAct = g.steVertAdy(vAct, hijoAct))
+        {
+            //Si aun no se ha metido el vertice actual y existe una arista con peso menor
+            if(!d.pertenece(hijoAct) && g.pesoArista(vAct,hijoAct) < weight[rel.imagen(hijoAct)])
+            {
+                // Que este sea el peso mas peque/o
+                prev[rel.imagen(hijoAct)] = iAct;
+                weight[rel.imagen(hijoAct)] = g.pesoArista(vAct,hijoAct);
+            }
+        }
+    }
+    // Imprimir los resultados
+    std::cout << "El arbol de minimo costo con Prim empezando en el vertice "<< g.etiqueta(rel.preImagen(0))<< " es:\n";
+    for(int index=1; index < tamG; ++index)
+    {
+        std::cout << "La arista: (" << g.etiqueta(rel.preImagen(index)) << ", " << g.etiqueta(rel.preImagen(prev[index])) << ") con peso " <<  weight[index]<<std::endl;
+    }
 }
 
 void vendedor(Grafo &g)

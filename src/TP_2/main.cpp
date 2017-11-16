@@ -1,12 +1,11 @@
 #include <iostream>
 #include <string>
 
-#include "grafoLista.h"
-//#include "grafoMatriz.h"
+//#include "grafoLista.h"
+#include "grafoMatriz.h"
 #include "colap.h"
 #include "dicc.h"
 #include "conjuntod.h"
-#include "arista.h"
 #include "algoritmos.h"
 
 void probarAlgoritmos();
@@ -216,7 +215,7 @@ void probarAlgoritmos()
                      "\t5.  Copiar grafo\n"
                      "\t6.  Iguales grafo\n"
                      "\t7.  Problema del vendedor\n"
-                     "\t8.  Volver al menu principa\n";
+                     "\t8.  Volver al menu principal\n";
         std::cin >> opcion;
         switch (opcion)
         {

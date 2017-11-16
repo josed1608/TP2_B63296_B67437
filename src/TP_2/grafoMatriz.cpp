@@ -3,15 +3,15 @@
 vert vertNulo = -1;
 
 Grafo::Grafo()
-: n{0}
+: n{0}, nA{0}
 {
 }
 
 
 void Grafo::vaciar()
 {
-    // Pone que el puntero al ultimo es 0
-    n=0;
+    // Pone que el puntero al ultimo es 0 y la cantidad de aristas
+    nA= n=0;
 }
 
 

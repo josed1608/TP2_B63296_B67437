@@ -1,8 +1,9 @@
 #ifndef CONJUNTOD_H
 #define CONJUNTOD_H
 
-#include "grafoLista.h"
-//#include "grafoMatriz.h"
+#include <iostream>
+//#include "grafoLista.h"
+#include "grafoMatriz.h"
 
 #include<string>
 

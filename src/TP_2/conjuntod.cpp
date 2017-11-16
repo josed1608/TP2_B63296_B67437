@@ -32,7 +32,6 @@ bool ConjuntoD::vacio()
 	return (primero == nullptr);
 }
 
-#include <iostream>
 
 std::string ConjuntoD::conjuntoAlQuePertenece(vert elem)
 {

@@ -18,6 +18,7 @@ class Grafo
     peso matPeso[MAX+1][MAX+1];
     // Puntero al ultimo, cantidad de vertices
     int n;
+    int nA;
 
 public:
 	Grafo();
@@ -35,10 +36,10 @@ public:
     inline std::string etiqueta(vert v){return arrEtiq[v];}
 
     // Se le agrega el peso a ambos vertices. Como es un grafo dirigido para (v1, v2) y (v2, v1).
-    void agregarArista(vert v1, vert v2, peso p ){ matPeso [v2][v1] =matPeso[v1][v2]= p;}
+    void agregarArista(vert v1, vert v2, peso p ){ matPeso [v2][v1] =matPeso[v1][v2]= p;++nA;}
 
     // Se pone peso nulo a las a (v1, v2) y (v2, v1)
-    void eliminarArista(vert v1, vert v2){ matPeso [v2][v1] =matPeso[v1][v2]= PESONULL;}
+    void eliminarArista(vert v1, vert v2){ matPeso [v2][v1] =matPeso[v1][v2]= PESONULL; --nA;}
 
     // Como es un grafo no dirigido, se intercambia el peso para ambos (v1, v2) y (v2, v1)
     inline void modificarPeso(vert v1, vert v2, peso p){ matPeso [v2][v1] =matPeso[v1][v2]= p;}
@@ -62,6 +63,8 @@ public:
     inline int numVerts(){return n;}
 
     int numVertAdy(vert v);
+
+    inline int numAristas(){return nA;}
 
     ~Grafo();
 };

@@ -8,9 +8,9 @@
 #include "conjuntod.h"
 #include "algoritmos.h"
 
-void probarAlgoritmos();
+void probarAlgoritmos(Grafo & grafo);
 
-void probarOperadores();
+void probarOperadores(Grafo & grafo);
 
 void grafoPredet(Grafo& grafo);
 
@@ -22,6 +22,9 @@ void impAristas(Grafo& grafo);
 
 int main()
 {
+    Grafo grafo = Grafo();
+    grafoPredet(grafo);
+
 	bool prueba = true;
 	while(prueba){
 		std::cout << "Bienvenido, para utilizar este programa de prueba, se le presentaran distintos menus con opciones indexadas por numeros y usted debera digitar el numero de "
@@ -34,8 +37,8 @@ int main()
 		std::cin >> opcion;
 		switch(opcion)
 		{
-			case 1: probarAlgoritmos(); break;
-			case 2: probarOperadores(); break;
+            case 1: probarAlgoritmos(grafo); break;
+            case 2: probarOperadores(grafo); break;
 			case 3: verTiempos(); break;
 			default: prueba = false; break;
 		}
@@ -43,10 +46,9 @@ int main()
 	return 0;
 }
 
-void probarOperadores()
+void probarOperadores(Grafo & grafo)
 {
     bool prueba = true;
-    Grafo grafo = Grafo();
     std::string etiq, etiqSalida, etiqEntrada, nuevaEtiq;
     vert v;
     int peso = 0;
@@ -188,10 +190,8 @@ void probarOperadores()
 	}
 }
 
-void probarAlgoritmos()
+void probarAlgoritmos(Grafo &grafo)
 {
-	Grafo grafo;
-	grafoPredet(grafo);
     bool prueba = true;
     int opcion;
     std::string etiq;

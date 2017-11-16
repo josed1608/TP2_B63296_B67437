@@ -50,17 +50,6 @@ void probarOperadores()
     std::string etiq, etiqSalida, etiqEntrada, nuevaEtiq;
     vert v;
     int peso = 0;
-    /*
-    grafo.agregarVert("a");
-    grafo.agregarVert("b");
-    grafo.agregarVert("c");
-    grafo.agregarVert("d");
-    grafo.agregarVert("e");
-    grafo.agregarArista(1 , 4, 2);
-    grafo.agregarArista(1 , 3, 3);
-    grafo.agregarArista(4 , 3, 5);
-    */
-
     while(prueba)
     {
         std::cout << "\t1.  Vaciar Grafo\n"
@@ -206,6 +195,9 @@ void probarAlgoritmos()
     bool prueba = true;
     int opcion;
     std::string etiq;
+    vert vectorVertices[grafo.numVerts()], vAct;
+    int vectorEnteros[grafo.numVerts()];
+    R1a1 <vert , int> rel ;
     while(prueba)
     {
         std::cout << "\t1.  Dijkstra\n"
@@ -222,9 +214,15 @@ void probarAlgoritmos()
         case 1:
             std::cout << "Digita la etiquta del vertice donde se va a calcular Dijkstra.\n";
             std::cin >> etiq;
-            dijkstra (grafo, buscarVertice(grafo,etiq)); break;
+            vAct = buscarVertice(grafo,etiq);
+            dijkstra (grafo, vAct, vectorVertices, vectorEnteros, rel );
+            imprimirDijkstra(grafo,vAct, vectorVertices, vectorEnteros, rel);
+            rel.vaciar(); break;
         case 2: floyd(grafo); break;
-        case 3: prim(grafo); break;
+        case 3:
+            prim(grafo, vectorVertices, vectorEnteros, rel );
+            imprimirPrim(grafo,vectorVertices, vectorEnteros, rel);
+            rel.vaciar(); break;
         case 4: kruskal(grafo); break;
         case 5: break;
         case 6: break;

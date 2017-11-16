@@ -215,11 +215,10 @@ vert buscarVertice(Grafo& grafo, std::string etiq)
     return vertice;
 }
 
-void dijkstra(Grafo &g, vert v)
+void dijkstra(Grafo &g, vert v, vert *prev, int *dist , R1a1 <vert, int>& r)
 {
-    int tamG =g.numVerts(), pMen, cPes, iAct, dist [tamG];
-    vert prev[tamG], vAct = g.primerVert(), vTemp, vMen;
-    R1a1 <vert, int> r;
+    int tamG =g.numVerts(), pMen, cPes, iAct;
+    vert vAct = g.primerVert(), vTemp, vMen;
     Dicc <vert> d;
 
     for(int index =0; index < tamG; ++index)
@@ -261,33 +260,11 @@ void dijkstra(Grafo &g, vert v)
             }
         }
     }
-
-    std:: cout << "Los caminos mas cortos para cada vertice es:\n";
-    // Imprime los resultados
-    for(vAct =g.primerVert() ;vAct != vertNulo ;vAct = g.steVert(vAct))
-    {
-        iAct= r.imagen(vAct);
-        if(dist[iAct] == INT_MAX)
-            std:: cout << "No existe camino entre "<< g.etiqueta(v)  <<" y " << g.etiqueta(vAct) << "\n";
-        else
-        {
-            std:: cout << "Camino de "<< g.etiqueta(v)  <<" a " << g.etiqueta(vAct) <<", con peso "<< dist[iAct] <<": "<< g.etiqueta(vAct)<< " ";
-            // Hasta que se llegue al destino
-            while(prev[iAct] !=vertNulo)
-            {
-                std:: cout << g.etiqueta((prev[iAct])) << " ";
-                iAct = r.imagen(prev[iAct]);
-            }
-            std:: cout << std::endl ;
-        }
-    }
-
 }
 
-void prim(Grafo &g)
+void prim(Grafo &g, vert *prev, int *weight, R1a1 <vert, int>& rel )
 {
-    int tamG = g.numVerts(), weight[tamG], prev [tamG], pMen;
-    R1a1 <vert , int> rel ;
+    int tamG = g.numVerts(), pMen;
     Dicc <vert> d;
     vert vAct =g.primerVert(), vTemp;
     for(int index=0; index < tamG; ++index)
@@ -296,9 +273,9 @@ void prim(Grafo &g)
         rel.agregarRel(vAct, index);
         vAct = g.steVert(vAct);
     }
-    prev[0]=-1;
+    prev[0]=
     weight[0] =0;
-    for(int index=0, iAct; index < tamG; ++index)
+    for(int index=0; index < tamG; ++index)
     {
         pMen=INF;
         //Coger el vertice mas peque/o
@@ -313,7 +290,6 @@ void prim(Grafo &g)
         }
         // Agregar a que es usado y cual es el indice actual del vertice
         d.agregar(vAct);
-        iAct = rel.imagen(vAct);
         // Para todos los vertices adyacentes al actual
         for (vert hijoAct=g.primerVertAdy(vAct); hijoAct!=vertNulo ; hijoAct = g.steVertAdy(vAct, hijoAct))
         {
@@ -321,20 +297,50 @@ void prim(Grafo &g)
             if(!d.pertenece(hijoAct) && g.pesoArista(vAct,hijoAct) < weight[rel.imagen(hijoAct)])
             {
                 // Que este sea el peso mas peque/o
-                prev[rel.imagen(hijoAct)] = iAct;
+                prev[rel.imagen(hijoAct)] = vAct;
                 weight[rel.imagen(hijoAct)] = g.pesoArista(vAct,hijoAct);
             }
         }
-    }
-    // Imprimir los resultados
-    std::cout << "El arbol de minimo costo con Prim empezando en el vertice "<< g.etiqueta(rel.preImagen(0))<< " es:\n";
-    for(int index=1; index < tamG; ++index)
-    {
-        std::cout << "La arista: (" << g.etiqueta(rel.preImagen(index)) << ", " << g.etiqueta(rel.preImagen(prev[index])) << ") con peso " <<  weight[index]<<std::endl;
     }
 }
 
 void vendedor(Grafo &g)
 {
 
+}
+
+void imprimirDijkstra(Grafo &g,  vert v, vert *prev, int *dist, R1a1 <vert, int> &r)
+{
+    std:: cout << "Los caminos mas cortos para cada vertice es:\n";
+    // Imprime los resultados
+    int iAct;
+    for(vert vAct =g.primerVert() ;vAct != vertNulo ;vAct = g.steVert(vAct))
+    {
+        iAct= r.imagen(vAct);
+
+        if(dist[iAct] == INF)
+            std:: cout << "No existe camino entre "<< g.etiqueta(v)  <<" y " << g.etiqueta(vAct) << "\n";
+        else
+        {
+            std:: cout << "Camino de "<< g.etiqueta(v)  <<" a " << g.etiqueta(vAct) <<", con peso "<< dist[iAct] <<": "<< g.etiqueta(vAct)<< " ";
+            // Hasta que se llegue al destino
+            while(prev[iAct] !=vertNulo)
+            {
+                std:: cout << g.etiqueta((prev[iAct])) << " ";
+                iAct = r.imagen(prev[iAct]);
+            }
+            std:: cout << std::endl ;
+        }
+    }
+}
+
+void imprimirPrim(Grafo &g, vert *prev, int *weight, R1a1 <vert, int>& rel)
+{
+    int tamG = g.numVerts();
+    // Imprimir los resultados
+    std::cout << "El arbol de minimo costo con Prim empezando en el vertice "<< g.etiqueta(rel.preImagen(0))<< " es:\n";
+    for(int index=1; index < tamG; ++index)
+    {
+        std::cout << "La arista: (" << g.etiqueta(rel.preImagen(index)) << ", " << g.etiqueta(prev[index]) << ") con peso " <<  weight[index]<<std::endl;
+    }
 }

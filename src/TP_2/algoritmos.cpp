@@ -369,11 +369,12 @@ void vendedor(Grafo &g)
     maxTamG = g.numVerts();
     vert vAct=g.primerVert();
     // Establecer relaciones
-    for(int index =0; index< maxTamG;++index)
+    for(int index =1; index<= maxTamG;++index)
     {
         relG.agregarRel(vAct, index);
         vAct = g.steVert(vAct);
     }
+    mejorSol[1]= relG.preImagen(1);
     diccG.agregar(g.primerVert());
     vendedorR(g,1);
 }
@@ -392,7 +393,7 @@ void imprimirVendedor(Grafo &g)
     if(cantidadSol !=0)
     {
         std::cout << "La solucion del problema del vendedor tiene una solucion optima de " << minCosto << " y la solucion siendo:\n";
-        for(int index =0; index< maxTamG; ++index)
+        for(int index =1; index<= maxTamG; ++index)
             std::cout <<g.etiqueta(relG.preImagen(mejorSol[index])) << " ";
         std::cout<< std::endl;
     }
@@ -408,23 +409,29 @@ void vendedorR(Grafo &g, int i)
         if(!diccG.pertenece(vAdy))
         {
             diccG.agregar(vAdy);
-            solucAct[i]= relG.imagen(vAdy);
+            solucAct[i+1]= relG.imagen(vAdy);
             gananciaAct+= g.pesoArista(vAct, vAdy);
             // Si esta en el ultimo agregado
             if(i ==maxTamG-1 )
             {
-                // Si se puede cerrar el ciclo se tienen una solucion factible
-                if( g.adyacente(relG.preImagen(0), vAdy))
+                // Si se puede cerrar el ciclo si se tiene una solucion factible
+                if( g.adyacente(relG.preImagen(1), vAdy))
                 {
                     ++cantidadSol;
-                    gananciaAct+= g.pesoArista(relG.preImagen(0), vAdy);
+                    gananciaAct+= g.pesoArista(relG.preImagen(1), vAdy);
+                   /* std::cout << gananciaAct<< std::endl;
+                    for(int index =1; index<= maxTamG; ++index)
+                        std::cout <<   g.etiqueta(relG.preImagen (solucAct[index]))<< " ";
+                    std::cout << std::endl;*/
                     // Si es mejor que la solucion anterior, haga esta la mejor solucion
                     if (gananciaAct < minCosto)
                     {
                         minCosto = gananciaAct;
-                        for(int indexCopy =0; indexCopy < maxTamG; ++indexCopy)
+                        for(int indexCopy =2; indexCopy <= maxTamG; ++indexCopy)
                             mejorSol[indexCopy] = solucAct[indexCopy];
                     }
+                    gananciaAct-= g.pesoArista(relG.preImagen(1), vAdy);
+
                 }
             }
             else

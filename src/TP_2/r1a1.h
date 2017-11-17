@@ -70,6 +70,7 @@ void R1a1<Dominio, Codominio>::vaciar()
         primero = primero->siguiente;
         delete borrable;
     }
+	primero = nullptr;
     n = 0;
 }
 

@@ -13,8 +13,10 @@
 
 
 void kruskal(Grafo& grafo);
-void floyd(Grafo& grafo);
+void floyd(Grafo& grafo, int** pesos, vert** prevs, R1a1<vert, int> rel);
 void imprimirMatrizFloyd(int** mat, int nVerts, Grafo &grafo, R1a1<vert, int> &rel);
+void imprimirMatrizPrevs(vert** mat, int nVerts, Grafo &grafo, R1a1<vert, int> &rel);
+void imprimirCaminoFloyd(Grafo& grafo, vert vInicio, vert vFinal, int** pesos, vert** prevs);
 void copiar(Grafo& dest, Grafo& org);
 bool iguales(Grafo& g1, Grafo& g2);
 void dijkstra(Grafo &g, vert v, vert * prev, int * dist , R1a1<vert, int>& r);

@@ -41,26 +41,20 @@ void kruskal(Grafo &grafo)
 	}
 }
 
-void floyd(Grafo& grafo)
+void floyd(Grafo& grafo, int **pesos, vert **prevs, R1a1<vert, int> rel)
 {
-	int** mat  = new int*[grafo.numVerts()];
-	for(int i = 0; i<grafo.numVerts(); ++i)
-	{
-		mat[i] = new int[grafo.numVerts()];
-	}
-
 	for(int i = 0; i < grafo.numVerts(); ++i)
 	{
 		for(int j = 0; j < grafo.numVerts(); ++j)
 		{
 			if(i==j)
-				mat[i][j] = 0;
+				pesos[i][j] = 0;
 			else
-                mat[i][j] = INF;
+				pesos[i][j] = INF;
+			prevs[i][j] = vertNulo;
 		}
 	}
 
-    R1a1<vert, int> rel;
 	vert v = grafo.primerVert();
 	int indice = 0;
 	while(v != vertNulo)
@@ -76,13 +70,12 @@ void floyd(Grafo& grafo)
 		vert vAdy = grafo.primerVertAdy(v);
 		while(vAdy != vertNulo)
 		{
-			mat[rel.imagen(v)][rel.imagen(vAdy)] = grafo.pesoArista(v, vAdy);
+			pesos[rel.imagen(v)][rel.imagen(vAdy)] = grafo.pesoArista(v, vAdy);
+			prevs[rel.imagen(v)][rel.imagen(vAdy)] = vAdy;
 			vAdy = grafo.steVertAdy(v, vAdy);
 		}
 		v = grafo.steVert(v);
 	}
-
-	imprimirMatrizFloyd(mat, grafo.numVerts(), grafo, rel);
 
 	int n = grafo.numVerts();
 	for(int k = 0; k < n; ++k)
@@ -91,16 +84,71 @@ void floyd(Grafo& grafo)
 		{
 			for(int j = 0; j < n; ++j)
 			{
-				if(mat[i][k] != INF && mat[k][j] != INF)
+				if(pesos[i][k] != INF && pesos[k][j] != INF)
 				{
-					if(mat[i][j] > mat[i][k] + mat[k][j])
-						mat[i][j] = mat[i][k] + mat[k][j];
+					if(pesos[i][j] > pesos[i][k] + pesos[k][j])
+					{
+						pesos[i][j] = pesos[i][k] + pesos[k][j];
+						prevs[i][j] = prevs[i][k];
+					}
 				}
 			}
 		}
 	}
 
-	imprimirMatrizFloyd(mat, grafo.numVerts(), grafo, rel);
+	//imprimirMatrizFloyd(pesos, grafo.numVerts(), grafo, rel);
+	//imprimirMatrizPrevs(prevs, grafo.numVerts(), grafo, rel);
+}
+
+void imprimirMatrizPrevs(vert** mat, int nVerts, Grafo &grafo, R1a1<vert, int> &rel){
+	std::cout << "La matriz resultante es:\n";
+
+	std::cout << "     ";
+	for(int deI = 0; deI < nVerts; ++deI)
+	{
+		std::cout << std::setw(10) << grafo.etiqueta(rel.preImagen(deI));
+	}
+	std::cout << std::endl;
+
+	for(int deI = 0; deI < nVerts; ++deI)
+	{
+		std::cout << std::setw(10) << grafo.etiqueta(rel.preImagen(deI));
+		for(int aJ = 0; aJ < nVerts; ++aJ)
+		{
+			std::cout << std::setw(10) << mat[deI][aJ];
+		}
+		std::cout <<std::endl;
+	}
+}
+
+void imprimirCaminoFloyd(Grafo &grafo, vert vInicio, vert vFinal, int **pesos, vert **prevs)
+{
+	R1a1<vert, int> rel;
+	vert v = grafo.primerVert();
+	int indice = 0;
+	while(v != vertNulo)
+	{
+		rel.agregarRel(v,indice);
+		++indice;
+		v= grafo.steVert(v);
+	}
+
+	if(prevs[rel.imagen(vInicio)][rel.imagen(vFinal)] == vertNulo)
+	{
+		std::cout << "No hay camino\n";
+	}
+	else
+	{
+		std::cout << "El camino mas corto posee un peso de: " << pesos[rel.imagen(vInicio)][rel.imagen(vFinal)] << std::endl;
+		std::cout << "Y esta dado por el camino: \n" << grafo.etiqueta(vInicio);
+		while(vInicio != vFinal)
+		{
+			std::cout << ", ";
+			vInicio = prevs[rel.imagen(vInicio)][rel.imagen(vFinal)];
+			std::cout << grafo.etiqueta(vInicio);
+		}
+		std::cout <<std::endl;
+	}
 }
 
 void imprimirMatrizFloyd(int **mat, int nVerts, Grafo& grafo, R1a1<vert, int>& rel)
@@ -262,6 +310,7 @@ void dijkstra(Grafo &g, vert v, vert *prev, int *dist , R1a1 <vert, int>& r)
     }
 }
 
+
 void prim(Grafo &g, vert *prev, int *weight, R1a1 <vert, int>& rel )
 {
     int tamG = g.numVerts(), pMen;
@@ -344,3 +393,4 @@ void imprimirPrim(Grafo &g, vert *prev, int *weight, R1a1 <vert, int>& rel)
         std::cout << "La arista: (" << g.etiqueta(rel.preImagen(index)) << ", " << g.etiqueta(prev[index]) << ") con peso " <<  weight[index]<<std::endl;
     }
 }
+

@@ -193,10 +193,25 @@ void probarOperadores(Grafo & grafo)
 void probarAlgoritmos(Grafo &grafo)
 {
     bool prueba = true;
-    int opcion;
-    std::string etiq;
-    vert vectorVertices[grafo.numVerts()], vAct;
+	int opcion, opcionFloyd;
+	std::string etiq, etiqSalida, etiqEntrada;
+
+	vert vectorVertices[grafo.numVerts()], vAct;
     int vectorEnteros[grafo.numVerts()];
+
+	Grafo grafoCopiarIguales;
+	grafoPredet(grafoCopiarIguales);
+
+	int** pesos = new int*[grafo.numVerts()];
+	vert** prevs = new vert*[grafo.numVerts()];
+	for(int i=0; i < grafo.numVerts(); ++i)
+	{
+		pesos[i] = new int[grafo.numVerts()];
+		prevs[i] = new vert[grafo.numVerts()];
+	}
+
+	bool pruebaFloyd = true;
+
     R1a1 <vert , int> rel ;
     while(prueba)
     {
@@ -218,7 +233,24 @@ void probarAlgoritmos(Grafo &grafo)
             dijkstra (grafo, vAct, vectorVertices, vectorEnteros, rel );
             imprimirDijkstra(grafo,vAct, vectorVertices, vectorEnteros, rel);
             rel.vaciar(); break;
-        case 2: floyd(grafo); break;
+		case 2:
+			floyd(grafo, pesos, prevs, rel);
+			while(pruebaFloyd)
+			{
+				std::cout << "Digite la etiqueta del vertice de salida\n";
+				std::cin >> etiqSalida;
+				std::cout << "Digite la etiqeta del vertice de llegada\n";
+				std::cin >> etiqEntrada;
+				imprimirCaminoFloyd(grafo, buscarVertice(grafo, etiqSalida), buscarVertice(grafo, etiqEntrada), pesos, prevs);
+				std::cout << "Digite 1 para salir de la prueba de Floyd o 2 para preguntar por un nuevo camino\n";
+				std::cin >> opcionFloyd;
+				if(opcionFloyd == 1)
+				{
+					pruebaFloyd = false;
+				}
+			}
+			rel.vaciar();
+			break;
         case 3:
             prim(grafo, vectorVertices, vectorEnteros, rel );
             imprimirPrim(grafo,vectorVertices, vectorEnteros, rel);
@@ -230,6 +262,14 @@ void probarAlgoritmos(Grafo &grafo)
         default: prueba = false; break;
         }
     }
+
+	for(int i=0; i < grafo.numVerts(); ++i)
+	{
+		delete[] pesos[i];
+		delete[] prevs[i];
+	}
+	delete pesos;
+	delete prevs;
 }
 
 void grafoPredet(Grafo& grafo)

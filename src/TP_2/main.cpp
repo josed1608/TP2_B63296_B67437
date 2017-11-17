@@ -258,7 +258,10 @@ void probarAlgoritmos(Grafo &grafo)
         case 4: kruskal(grafo); break;
         case 5: break;
         case 6: break;
-        case 7: vendedor(grafo); break;
+        case 7:
+            limpiarVariablesGlobales();
+            vendedor(grafo);
+            imprimirVendedor(grafo); break;
         default: prueba = false; break;
         }
     }
@@ -281,6 +284,17 @@ void grafoPredet(Grafo& grafo)
     grafo.agregarVert("D");
     grafo.agregarVert("E");
 	//grafo.agregarVert("F");
+    grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "B"), 3);
+    grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "C"), 4);
+    grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "D"), 2);
+    grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "E"), 7);
+    grafo.agregarArista(buscarVertice(grafo,"B"), buscarVertice(grafo, "C"), 4);
+    grafo.agregarArista(buscarVertice(grafo,"B"), buscarVertice(grafo, "D"), 6);
+    grafo.agregarArista(buscarVertice(grafo,"B"), buscarVertice(grafo, "E"), 3);
+    grafo.agregarArista(buscarVertice(grafo,"C"), buscarVertice(grafo, "D"), 5);
+    grafo.agregarArista(buscarVertice(grafo,"C"), buscarVertice(grafo, "E"), 8);
+    grafo.agregarArista(buscarVertice(grafo,"D"), buscarVertice(grafo, "E"), 6);
+    /*
     grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "C"), 7);
     grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "D"), 5);
     grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "E"), 2);
@@ -289,6 +303,7 @@ void grafoPredet(Grafo& grafo)
     grafo.agregarArista(buscarVertice(grafo,"C"), buscarVertice(grafo, "D"), 50);
     grafo.agregarArista(buscarVertice(grafo,"C"), buscarVertice(grafo, "E"), 6);
     grafo.agregarArista(buscarVertice(grafo,"D"), buscarVertice(grafo, "E"), 1);
+    */
 }
 
 void verTiempos()

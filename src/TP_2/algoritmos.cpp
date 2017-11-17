@@ -1,5 +1,4 @@
 #include "algoritmos.h"
-#define INF INT_MAX
 
 void kruskal(Grafo &grafo)
 {
@@ -352,10 +351,92 @@ void prim(Grafo &g, vert *prev, int *weight, R1a1 <vert, int>& rel )
         }
     }
 }
+// Variables globales vendedor
+int solucAct [MAXARRAY];
+Dicc<vert> diccG;
+int mejorSol[MAXARRAY];
+int minCosto;
+int cantidadSol;
+int gananciaAct;
+R1a1 <vert, int> relG;
+int maxTamG;
 
 void vendedor(Grafo &g)
 {
+    gananciaAct =0;
+    minCosto =INF;
+    cantidadSol =0;
+    maxTamG = g.numVerts();
+    vert vAct=g.primerVert();
+    // Establecer relaciones
+    for(int index =0; index< maxTamG;++index)
+    {
+        relG.agregarRel(vAct, index);
+        vAct = g.steVert(vAct);
+    }
+    diccG.agregar(g.primerVert());
+    vendedorR(g,1);
+}
 
+void limpiarVariablesGlobales()
+{
+    diccG.vaciar();
+    relG.vaciar();
+}
+
+void imprimirVendedor(Grafo &g)
+{
+    // Imprimir solucion
+    std::cout << "Hay " << cantidadSol << " soluciones factibles.\n";
+    // Si no hay soluciones factibles, no imprime solucion optima
+    if(cantidadSol !=0)
+    {
+        std::cout << "La solucion del problema del vendedor tiene una solucion optima de " << minCosto << " y la solucion siendo:\n";
+        for(int index =0; index< maxTamG; ++index)
+            std::cout <<g.etiqueta(relG.preImagen(mejorSol[index])) << " ";
+        std::cout<< std::endl;
+    }
+
+}
+
+void vendedorR(Grafo &g, int i)
+{
+    // Vaya desde el vertice actual hasta todos los adyacentes de este
+    for(vert vAct = relG.preImagen(i), vAdy =g.primerVertAdy(vAct) ;vAdy!=vertNulo ;vAdy= g.steVertAdy(vAct, vAdy))
+    {
+        // Si se puede agregar
+        if(!diccG.pertenece(vAdy))
+        {
+            diccG.agregar(vAdy);
+            solucAct[i]= relG.imagen(vAdy);
+            gananciaAct+= g.pesoArista(vAct, vAdy);
+            // Si esta en el ultimo agregado
+            if(i ==maxTamG-1 )
+            {
+                // Si se puede cerrar el ciclo se tienen una solucion factible
+                if( g.adyacente(relG.preImagen(0), vAdy))
+                {
+                    ++cantidadSol;
+                    gananciaAct+= g.pesoArista(relG.preImagen(0), vAdy);
+                    // Si es mejor que la solucion anterior, haga esta la mejor solucion
+                    if (gananciaAct < minCosto)
+                    {
+                        minCosto = gananciaAct;
+                        for(int indexCopy =0; indexCopy < maxTamG; ++indexCopy)
+                            mejorSol[indexCopy] = solucAct[indexCopy];
+                    }
+                }
+            }
+            else
+            {
+                // Llamada recursiva
+                vendedorR(g, i+1);
+            }
+            // Arepentimiento
+            gananciaAct -= g.pesoArista(vAct, vAdy);
+            diccG.borrar(vAdy);
+        }
+    }
 }
 
 void imprimirDijkstra(Grafo &g,  vert v, vert *prev, int *dist, R1a1 <vert, int> &r)

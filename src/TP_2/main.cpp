@@ -256,8 +256,14 @@ void probarAlgoritmos(Grafo &grafo)
             imprimirPrim(grafo,vectorVertices, vectorEnteros, rel);
             rel.vaciar(); break;
         case 4: kruskal(grafo); break;
-        case 5: break;
-        case 6: break;
+		case 5:
+			std::cout << "Se copio el grafo predeterminado en el grafo de pruebas\n";
+			copiar(grafo, grafoCopiarIguales);
+			break;
+		case 6:
+			std::cout << "Se compararan el grafo predeterminado con el actual grafo de pruebas\n";
+			iguales(grafo, grafoCopiarIguales) == true ? std::cout << "iguales\n" : std::cout << "no son iguales\n";
+			break;
         case 7:
             limpiarVariablesGlobales();
             vendedor(grafo);

@@ -8,6 +8,11 @@
 #include "conjuntod.h"
 #include "algoritmos.h"
 
+
+const int PEQ = 100;
+const int MED = 1000;
+const int GRA = 10000;
+
 void probarAlgoritmos(Grafo & grafo);
 
 void probarOperadores(Grafo & grafo);
@@ -23,7 +28,7 @@ void impAristas(Grafo& grafo);
 int main()
 {
     Grafo grafo = Grafo();
-    grafoPredet(grafo);
+    grafoCompleto(grafo,10);
 
 	bool prueba = true;
 	while(prueba){

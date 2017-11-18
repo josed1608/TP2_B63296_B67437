@@ -42,4 +42,15 @@ void imprimirPrim(Grafo &g, vert *prev, int *weight, R1a1 <vert, int>& rel);
 void limpiarVariablesGlobales();
 void imprimirVendedor(Grafo &g);
 
+/// Crea un grafo completo, osea que haya una arista entre cada vertice, excepto al vertice mismo como no tiene lazos
+/// @param g Donde se va a crear el grafo
+/// @param tam La cantidad de vertices que se desea crear.
+void grafoCompleto(Grafo &g, int tam);
+
+/// Crea un grafo que no tiene ninguna arista, los vertices estan aislados totalmente
+/// @param g Donde se va a crear el grafo
+/// @param tam La cantidad de vertices que se desea crear.
+void grafoAislado(Grafo &g, int tam);
+
+
 #endif // ALGORITMOS_H

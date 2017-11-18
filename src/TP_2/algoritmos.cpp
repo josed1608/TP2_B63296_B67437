@@ -374,7 +374,7 @@ void vendedor(Grafo &g)
         relG.agregarRel(vAct, index);
         vAct = g.steVert(vAct);
     }
-    mejorSol[1]= relG.preImagen(1);
+    mejorSol[0]= relG.preImagen(1);
     diccG.agregar(g.primerVert());
     vendedorR(g,1);
 }
@@ -393,7 +393,7 @@ void imprimirVendedor(Grafo &g)
     if(cantidadSol !=0)
     {
         std::cout << "La solucion del problema del vendedor tiene una solucion optima de " << minCosto << " y la solucion siendo:\n";
-        for(int index =1; index<= maxTamG; ++index)
+        for(int index =0; index< maxTamG; ++index)
             std::cout <<g.etiqueta(relG.preImagen(mejorSol[index])) << " ";
         std::cout<< std::endl;
     }
@@ -402,14 +402,16 @@ void imprimirVendedor(Grafo &g)
 
 void vendedorR(Grafo &g, int i)
 {
+    vert vAct=relG.preImagen(i);
     // Vaya desde el vertice actual hasta todos los adyacentes de este
-    for(vert vAct = relG.preImagen(i), vAdy =g.primerVertAdy(vAct) ;vAdy!=vertNulo ;vAdy= g.steVertAdy(vAct, vAdy))
+    for(int index=1; index<=maxTamG; ++index)
     {
+        vert vAdy=relG.preImagen(index);
         // Si se puede agregar
-        if(!diccG.pertenece(vAdy))
+        if( g.adyacente(vAdy,vAct) && !diccG.pertenece(vAdy))
         {
             diccG.agregar(vAdy);
-            solucAct[i+1]= relG.imagen(vAdy);
+            solucAct[i]= relG.imagen(vAdy);
             gananciaAct+= g.pesoArista(vAct, vAdy);
             // Si esta en el ultimo agregado
             if(i ==maxTamG-1 )
@@ -419,19 +421,18 @@ void vendedorR(Grafo &g, int i)
                 {
                     ++cantidadSol;
                     gananciaAct+= g.pesoArista(relG.preImagen(1), vAdy);
-                   /* std::cout << gananciaAct<< std::endl;
-                    for(int index =1; index<= maxTamG; ++index)
-                        std::cout <<   g.etiqueta(relG.preImagen (solucAct[index]))<< " ";
-                    std::cout << std::endl;*/
+                    std::cout << gananciaAct<< std::endl;
+                    for(int indexP =1; indexP<= maxTamG; ++indexP)
+                        std::cout <<   g.etiqueta(relG.preImagen (solucAct[indexP]))<< " ";
+                    std::cout << std::endl;
                     // Si es mejor que la solucion anterior, haga esta la mejor solucion
                     if (gananciaAct < minCosto)
                     {
                         minCosto = gananciaAct;
-                        for(int indexCopy =2; indexCopy <= maxTamG; ++indexCopy)
+                        for(int indexCopy =1; indexCopy <= maxTamG; ++indexCopy)
                             mejorSol[indexCopy] = solucAct[indexCopy];
                     }
                     gananciaAct-= g.pesoArista(relG.preImagen(1), vAdy);
-
                 }
             }
             else
@@ -439,9 +440,11 @@ void vendedorR(Grafo &g, int i)
                 // Llamada recursiva
                 vendedorR(g, i+1);
             }
+
             // Arepentimiento
             gananciaAct -= g.pesoArista(vAct, vAdy);
             diccG.borrar(vAdy);
+
         }
     }
 }
@@ -482,3 +485,29 @@ void imprimirPrim(Grafo &g, vert *prev, int *weight, R1a1 <vert, int>& rel)
     }
 }
 
+
+void grafoCompleto(Grafo &g, int tam)
+{
+    // Crea las aristas aisladas
+    grafoAislado(g,tam);
+    // Une todas las aristas
+    int times=g.numVerts()-1, index=1;
+    for(vert vPrin =g.primerVert(), vAct; index<=times; vPrin= g.steVert(vPrin), ++index)
+    {
+        vAct= g.steVert(vPrin);
+        for(; vAct!= vertNulo; vAct=g.steVert(vAct))
+        {
+            g.agregarArista(vPrin, vAct, rand()% 100+1);
+        }
+    }
+}
+
+void grafoAislado(Grafo &g, int tam)
+{
+    // Crea los vertices
+    for(int index=1; index<=tam; ++index)
+    {
+        g.agregarVert(std::to_string(index));
+    }
+
+}

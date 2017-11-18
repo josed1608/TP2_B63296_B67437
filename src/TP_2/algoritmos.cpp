@@ -321,8 +321,7 @@ void prim(Grafo &g, vert *prev, int *weight, R1a1 <vert, int>& rel )
         rel.agregarRel(vAct, index);
         vAct = g.steVert(vAct);
     }
-    prev[0]=
-    weight[0] =0;
+	prev[0]= weight[0] =0;
     for(int index=0; index < tamG; ++index)
     {
         pMen=INF;
@@ -502,6 +501,50 @@ void grafoCompleto(Grafo &g, int tam)
     }
 }
 
+void grafoTodosAUno(Grafo& g, int tam)
+{
+	grafoAislado(g, tam);
+	vert principal = g.primerVert();
+	for(vert ady = g.steVert(principal); ady != vertNulo; ady = g.steVert(ady))
+	{
+		g.agregarArista(principal, ady, rand()%100+1);
+	}
+}
+
+void grafoAleatorio(Grafo& g, int verts, int aristas)
+{
+	Dicc<Arista> agregadas;
+	R1a1<vert, int> rel;
+	// Crea los vertices
+	for(int index=1; index<=verts; ++index)
+	{
+		rel.agregarRel(g.agregarVert(std::to_string(index)), index);
+	}
+
+	//Primero me debo asegurar que sea conexo, para Prim y Kruskal
+	for(vert act = g.primerVert(); g.steVert(act) != vertNulo; act = g.steVert(act))
+	{
+		vert ste = g.steVert(act);
+		agregadas.agregar( Arista(act, ste));
+		g.agregarArista(act, ste, rand()%100+1);
+	}
+	aristas -=(verts-1);
+
+	//Agrego aristas hasta que ya no tenga que agregar mas
+	while(aristas != 0)
+	{
+		vert v1 = rel.preImagen(rand()%verts + 1);
+		vert v2 = rel.preImagen(rand()%verts + 1);
+		if(v1 != v2 && !agregadas.pertenece(Arista(v1, v2)))
+		{
+			agregadas.agregar( Arista(v1, v2));
+			g.agregarArista(v1, v2, rand()%100+1);
+			--aristas;
+		}
+	}
+
+}
+
 void grafoAislado(Grafo &g, int tam)
 {
     // Crea los vertices
@@ -531,125 +574,334 @@ std::chrono::duration<double> calcPromDij(Grafo & g, vert * prev, int * dist, R1
 void tiempoDijkstra(std::ofstream& archivo)
 {
     std::chrono::duration<double> total;
-    archivo << "Grafos pequenos:\n";
+	archivo << "Dijkstra\n"
+			   "Grafos pequenos:\n";
 
-    Grafo g = Grafo();
     vert prev [GRA];
     int dist[GRA];
     R1a1 <vert, int> r;
 
-    grafoAislado(g, PEQ);
-    total = calcPromDij(g,prev, dist, r);
-    g.vaciar();
+	total = calcPromDij(todAUnoPeq,prev,dist,r);
+	archivo << "\tEl promedio de grafo todos a uno es: " << total.count() << std::endl;
+
+	total = calcPromDij(aleatorioPeq,prev,dist,r);
+	archivo << "\tEl promedio de grafo aleatorio es: " << total.count() << std::endl;
+
+	total = calcPromDij(aisladoPeq,prev, dist, r);
     archivo << "\tEl promedio de grafo aislado: " << total.count() << std::endl;
 
-    grafoCompleto(g, PEQ);
-    total = calcPromDij(g,prev, dist, r);
-    g.vaciar();
+	total = calcPromDij(completoPeq,prev, dist, r);
     archivo << "\tEl promedio de grafo completo: " << total.count() << std::endl;
 
     //medianos
     archivo << "Grafos medianos:\n";
 
-    grafoAislado(g, MED);
-    total = calcPromDij(g,prev, dist, r);
-    g.vaciar();
+	total = calcPromDij(todAUnoMed,prev,dist,r);
+	archivo << "\tEl promedio de grafo todos a uno es: " << total.count() << std::endl;
+
+	total = calcPromDij(aleatorioMed,prev,dist,r);
+	archivo << "\tEl promedio de grafo aleatorio es: " << total.count() << std::endl;
+
+	total = calcPromDij(aisladoMed,prev, dist, r);
     archivo << "\tEl promedio de grafo aislado: " << total.count() << std::endl;
 
-    grafoCompleto(g, MED);
-    total = calcPromDij(g,prev, dist, r);
-    g.vaciar();
+	total = calcPromDij(completoMed,prev, dist, r);
     archivo << "\tEl promedio de grafo completo: " << total.count() << std::endl;
 
     //grandes
     archivo << "Grafos grandes:\n";
 
-    grafoAislado(g, GRA);
-    total = calcPromDij(g,prev, dist, r);
-    g.vaciar();
+	total = calcPromDij(todAUnoGra,prev,dist,r);
+	archivo << "\tEl promedio de grafo todos a uno es: " << total.count() << std::endl;
+
+	total = calcPromDij(aleatorioGra,prev,dist,r);
+	archivo << "\tEl promedio de grafo aleatorio es: " << total.count() << std::endl;
+
+	total = calcPromDij(aisladoGra,prev, dist, r);
     archivo << "\tEl promedio de grafo aislado: " << total.count() << std::endl;
 
-    grafoCompleto(g, GRA);
-    total = calcPromDij(g,prev, dist, r);
-    g.vaciar();
+	total = calcPromDij(completoGra,prev, dist, r);
     archivo << "\tEl promedio de grafo completo: " << total.count() << std::endl;
+}
+
+void tiemposFloyd(std::ofstream &archivo)
+{
+	std::chrono::duration<double> total;
+	archivo << "Floyd\n"
+			   "Grafos pequenos:\n";
+
+	int** pesos = new int*[GRA];
+	vert** prevs = new vert*[GRA];
+	for(int i=0; i < GRA; ++i)
+	{
+		pesos[i] = new int[GRA];
+		prevs[i] = new vert[GRA];
+	}
+
+	R1a1 <vert, int> r;
+
+	auto inicio = std::chrono::high_resolution_clock::now();
+	floyd(todAUnoPeq, pesos, prevs, r);
+	auto fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo todos a uno es: " << total.count() << std::endl;
+
+	inicio = std::chrono::high_resolution_clock::now();
+	floyd(aleatorioPeq, pesos, prevs, r);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo aleatorio: " << total.count() << std::endl;
+
+	inicio = std::chrono::high_resolution_clock::now();
+	floyd(aisladoPeq, pesos, prevs, r);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo aislado: " << total.count() << std::endl;
+
+	inicio = std::chrono::high_resolution_clock::now();
+	floyd(completoPeq, pesos, prevs, r);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo completo: " << total.count() << std::endl;
+
+	//medianos
+	archivo << "Grafos medianos:\n";
+
+	inicio = std::chrono::high_resolution_clock::now();
+	floyd(todAUnoMed, pesos, prevs, r);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo todos a uno es: " << total.count() << std::endl;
+
+	inicio = std::chrono::high_resolution_clock::now();
+	floyd(aleatorioMed, pesos, prevs, r);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo aleatorio: " << total.count() << std::endl;
+
+	inicio = std::chrono::high_resolution_clock::now();
+	floyd(aisladoMed, pesos, prevs, r);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo aislado: " << total.count() << std::endl;
+
+	inicio = std::chrono::high_resolution_clock::now();
+	floyd(completoMed, pesos, prevs, r);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo completo: " << total.count() << std::endl;
+
+	//grandes
+	archivo << "Grafos grandes:\n";
+
+	inicio = std::chrono::high_resolution_clock::now();
+	floyd(todAUnoGra, pesos, prevs, r);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo todos a uno es: " << total.count() << std::endl;
+
+	inicio = std::chrono::high_resolution_clock::now();
+	floyd(aleatorioGra, pesos, prevs, r);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo aleatorio: " << total.count() << std::endl;
+
+	inicio = std::chrono::high_resolution_clock::now();
+	floyd(aisladoGra, pesos, prevs, r);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo aislado: " << total.count() << std::endl;
+
+	inicio = std::chrono::high_resolution_clock::now();
+	floyd(completoGra, pesos, prevs, r);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo completo: " << total.count() << std::endl;
+
+	for(int i=0; i < GRA; ++i)
+	{
+		delete[] pesos[i];
+		delete[] prevs[i];
+	}
+	delete pesos;
+	delete prevs;
 }
 
 void tiemposPrim(std::ofstream& archivo)
 {
     std::chrono::duration<double> total;
-    archivo << "Grafos pequenos:\n";
+	archivo << "Prim:\n"
+			   "Grafos pequenos:\n";
 
-    Grafo g = Grafo();
     vert prev [GRA];
     int dist[GRA];
     R1a1 <vert, int> r;
 
-    grafoAislado(g, PEQ);
-    auto inicio = std::chrono::high_resolution_clock::now();
-    prim(g, prev, dist, r);
-    auto fin = std::chrono::high_resolution_clock::now();
-    total = fin-inicio;
-    g.vaciar();
-    r.vaciar();
-    archivo << "\tEl tiempo de grafo aislado: " << total.count() << std::endl;
+	auto inicio = std::chrono::high_resolution_clock::now();
+	prim(todAUnoPeq, prev, dist, r);
+	auto fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo todos a uno es: " << total.count() << std::endl;
 
-    grafoCompleto(g, PEQ);
+	inicio = std::chrono::high_resolution_clock::now();
+	prim(aleatorioPeq, prev, dist, r);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo aleatorio: " << total.count() << std::endl;
+
     inicio = std::chrono::high_resolution_clock::now();
-    prim(g, prev, dist, r);
+	prim(completoPeq, prev, dist, r);
     fin = std::chrono::high_resolution_clock::now();
     total = fin-inicio;
-    g.vaciar();
     r.vaciar();
     archivo << "\tEl tiempo de grafo completo: " << total.count() << std::endl;
 
     //medianos
     archivo << "Grafos medianos:\n";
 
-    grafoAislado(g, MED);
-    inicio = std::chrono::high_resolution_clock::now();
-    prim(g, prev, dist, r);
-    fin = std::chrono::high_resolution_clock::now();
-    total = fin-inicio;
-    g.vaciar();
-    r.vaciar();
-    archivo << "\tEl tiempo de grafo aislado: " << total.count() << std::endl;
+	inicio = std::chrono::high_resolution_clock::now();
+	prim(todAUnoMed, prev, dist, r);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo todos a uno es: " << total.count() << std::endl;
 
-    grafoCompleto(g, MED);
+	inicio = std::chrono::high_resolution_clock::now();
+	prim(aleatorioMed, prev, dist, r);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo aleatorio: " << total.count() << std::endl;
+
     inicio = std::chrono::high_resolution_clock::now();
-    prim(g, prev, dist, r);
+	prim(completoMed, prev, dist, r);
     fin = std::chrono::high_resolution_clock::now();
     total = fin-inicio;
-    g.vaciar();
     r.vaciar();
     archivo << "\tEl tiempo de grafo completo: " << total.count() << std::endl;
 
     //grandes
     archivo << "Grafos grandes:\n";
 
-    grafoAislado(g, GRA);
-    inicio = std::chrono::high_resolution_clock::now();
-    prim(g, prev, dist, r);
-    fin = std::chrono::high_resolution_clock::now();
-    total = fin-inicio;
-    g.vaciar();
-    r.vaciar();
-    archivo << "\tEl tiempo de grafo aislado: " << total.count() << std::endl;
+	inicio = std::chrono::high_resolution_clock::now();
+	prim(todAUnoGra, prev, dist, r);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo todos a uno es: " << total.count() << std::endl;
 
-    grafoCompleto(g, GRA);
+	inicio = std::chrono::high_resolution_clock::now();
+	prim(aleatorioGra, prev, dist, r);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo aleatorio: " << total.count() << std::endl;
+
     inicio = std::chrono::high_resolution_clock::now();
-    prim(g, prev, dist, r);
+	prim(completoGra, prev, dist, r);
     fin = std::chrono::high_resolution_clock::now();
     total = fin-inicio;
-    g.vaciar();
     r.vaciar();
     archivo << "\tEl tiempo de grafo completo: " << total.count() << std::endl;
+}
+
+void tiemposKruskal(std::ofstream &archivo)
+{
+	std::chrono::duration<double> total;
+	archivo << "Kruskal:\n"
+			   "Grafos pequenos:\n";
+
+	R1a1 <vert, int> r;
+
+	auto inicio = std::chrono::high_resolution_clock::now();
+	kruskal(todAUnoPeq);
+	auto fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo todos a uno es: " << total.count() << std::endl;
+
+	inicio = std::chrono::high_resolution_clock::now();
+	kruskal(aleatorioPeq);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo aleatorio: " << total.count() << std::endl;
+
+	inicio = std::chrono::high_resolution_clock::now();
+	kruskal(completoPeq);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo completo: " << total.count() << std::endl;
+
+	//medianos
+	archivo << "Grafos medianos:\n";
+
+	inicio = std::chrono::high_resolution_clock::now();
+	kruskal(todAUnoMed);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo todos a uno es: " << total.count() << std::endl;
+
+	inicio = std::chrono::high_resolution_clock::now();
+	kruskal(aleatorioMed);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo aleatorio: " << total.count() << std::endl;
+
+	inicio = std::chrono::high_resolution_clock::now();
+	kruskal(completoMed);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo completo: " << total.count() << std::endl;
+
+	//grandes
+	archivo << "Grafos grandes:\n";
+
+	inicio = std::chrono::high_resolution_clock::now();
+	kruskal(todAUnoGra);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo todos a uno es: " << total.count() << std::endl;
+
+	inicio = std::chrono::high_resolution_clock::now();
+	kruskal(aleatorioGra);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo aleatorio: " << total.count() << std::endl;
+
+	inicio = std::chrono::high_resolution_clock::now();
+	kruskal(completoGra);
+	fin = std::chrono::high_resolution_clock::now();
+	total = fin-inicio;
+	r.vaciar();
+	archivo << "\tEl tiempo de grafo completo: " << total.count() << std::endl;
 }
 
 void tiemposVendedor(std::ofstream& archivo)
 {
     std::chrono::duration<double> total;
-    archivo << "Grafos pequenos:\n";
+	archivo << "Vendedor\n"
+			   "Grafos pequenos:\n";
 
     Grafo g = Grafo();
     grafoAislado(g, PEQV);
@@ -732,3 +984,53 @@ void tiemposVendedor(std::ofstream& archivo)
     else
         archivo << "No hay solucion." <<std::endl;}
 
+Grafo aisladoPeq;
+Grafo aisladoMed;
+Grafo aisladoGra;
+
+Grafo completoPeq;
+Grafo completoMed;
+Grafo completoGra;
+
+Grafo todAUnoPeq;
+Grafo todAUnoMed;
+Grafo todAUnoGra;
+
+Grafo aleatorioPeq;
+Grafo aleatorioMed;
+Grafo aleatorioGra;
+
+void crearGrafosTiempos()
+{
+	grafoAislado(aisladoPeq, PEQ);
+	grafoAislado(aisladoMed, MED);
+	grafoAislado(aisladoGra, GRA);
+
+	grafoCompleto(completoPeq, PEQ);
+	grafoCompleto(completoMed, MED);
+	grafoCompleto(completoGra, GRA);
+
+	grafoTodosAUno(todAUnoPeq, PEQ);
+	grafoTodosAUno(todAUnoMed, MED);
+	grafoTodosAUno(todAUnoGra, GRA);
+
+	grafoAleatorio(aleatorioPeq, PEQ, PEQ_ARI);
+	grafoAleatorio(aleatorioMed, MED, MED_ARI);
+	grafoAleatorio(aleatorioGra, GRA, GRA_ARI);
+}
+
+void limpiarGrafosTiempos()
+{
+	aisladoPeq.vaciar();
+	aisladoMed.vaciar();
+	aisladoGra.vaciar();
+	completoPeq.vaciar();
+	completoMed.vaciar();
+	completoGra.vaciar();
+	todAUnoGra.vaciar();
+	todAUnoMed.vaciar();
+	todAUnoPeq.vaciar();
+	aleatorioGra.vaciar();
+	aleatorioMed.vaciar();
+	aleatorioPeq.vaciar();
+}

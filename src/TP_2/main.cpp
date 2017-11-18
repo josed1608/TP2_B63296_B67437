@@ -2,8 +2,8 @@
 #include <string>
 #include <fstream>
 
-//#include "grafoLista.h"
-#include "grafoMatriz.h"
+#include "grafoLista.h"
+//#include "grafoMatriz.h"
 #include "colap.h"
 #include "dicc.h"
 #include "conjuntod.h"
@@ -290,7 +290,6 @@ void grafoPredet(Grafo& grafo)
 	grafo.agregarVert("C");
     grafo.agregarVert("D");
     grafo.agregarVert("E");
-	//grafo.agregarVert("F");
     grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "B"), 3);
     grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "C"), 4);
     grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "D"), 2);
@@ -316,28 +315,26 @@ void grafoPredet(Grafo& grafo)
 void verTiempos()
 {
     std::ofstream archivoTiempos;
-    archivoTiempos.open("archivoTiempos.txt");
-    archivoTiempos << "Tiempos Dijkstra:\n";
-    //tiempoDijkstra(archivoTiempos);
+	archivoTiempos.open("archivoTiempos.txt");
+	crearGrafosTiempos();
+
+	tiempoDijkstra(archivoTiempos);
     archivoTiempos <<std::endl;
 
-    archivoTiempos << "Tiempos Floyd:\n";
-
+	tiemposFloyd(archivoTiempos);
     archivoTiempos <<std::endl;
 
-    archivoTiempos << "Tiempos Prim:\n";
-    //tiemposPrim(archivoTiempos);
+	tiemposPrim(archivoTiempos);
     archivoTiempos <<std::endl;
 
-    archivoTiempos << "Tiempos Kruskal:\n";
+	tiemposKruskal(archivoTiempos);
+	archivoTiempos <<std::endl;
 
-    archivoTiempos <<std::endl;
-
-    archivoTiempos << "Problema del vendedor:\n";
-    //tiemposVendedor(archivoTiempos);
+	//tiemposVendedor(archivoTiempos);
     archivoTiempos <<std::endl;
 
     archivoTiempos.close();
+	limpiarGrafosTiempos();
 }
 
 void impEtiquetas(Grafo& grafo)

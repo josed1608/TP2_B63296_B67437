@@ -511,3 +511,224 @@ void grafoAislado(Grafo &g, int tam)
     }
 
 }
+
+std::chrono::duration<double> calcPromDij(Grafo & g, vert * prev, int * dist, R1a1 <vert, int> r)
+{
+    std::chrono::duration<double> total;
+
+    for(vert vAct = g.primerVert(); vAct!=vertNulo; vAct= g.steVert(vAct))
+    {
+        auto inicio = std::chrono::high_resolution_clock::now();
+        dijkstra(g, g.primerVert(), prev, dist, r);
+        auto fin = std::chrono::high_resolution_clock::now();
+        total += fin-inicio;
+        r.vaciar();
+    }
+    std::chrono::duration<double> promedio = total/((double)g.numVerts());
+    return promedio;
+}
+
+void tiempoDijkstra(std::ofstream& archivo)
+{
+    std::chrono::duration<double> total;
+    archivo << "Grafos pequenos:\n";
+
+    Grafo g = Grafo();
+    vert prev [GRA];
+    int dist[GRA];
+    R1a1 <vert, int> r;
+
+    grafoAislado(g, PEQ);
+    total = calcPromDij(g,prev, dist, r);
+    g.vaciar();
+    archivo << "\tEl promedio de grafo aislado: " << total.count() << std::endl;
+
+    grafoCompleto(g, PEQ);
+    total = calcPromDij(g,prev, dist, r);
+    g.vaciar();
+    archivo << "\tEl promedio de grafo completo: " << total.count() << std::endl;
+
+    //medianos
+    archivo << "Grafos medianos:\n";
+
+    grafoAislado(g, MED);
+    total = calcPromDij(g,prev, dist, r);
+    g.vaciar();
+    archivo << "\tEl promedio de grafo aislado: " << total.count() << std::endl;
+
+    grafoCompleto(g, MED);
+    total = calcPromDij(g,prev, dist, r);
+    g.vaciar();
+    archivo << "\tEl promedio de grafo completo: " << total.count() << std::endl;
+
+    //grandes
+    archivo << "Grafos grandes:\n";
+
+    grafoAislado(g, GRA);
+    total = calcPromDij(g,prev, dist, r);
+    g.vaciar();
+    archivo << "\tEl promedio de grafo aislado: " << total.count() << std::endl;
+
+    grafoCompleto(g, GRA);
+    total = calcPromDij(g,prev, dist, r);
+    g.vaciar();
+    archivo << "\tEl promedio de grafo completo: " << total.count() << std::endl;
+}
+
+void tiemposPrim(std::ofstream& archivo)
+{
+    std::chrono::duration<double> total;
+    archivo << "Grafos pequenos:\n";
+
+    Grafo g = Grafo();
+    vert prev [GRA];
+    int dist[GRA];
+    R1a1 <vert, int> r;
+
+    grafoAislado(g, PEQ);
+    auto inicio = std::chrono::high_resolution_clock::now();
+    prim(g, prev, dist, r);
+    auto fin = std::chrono::high_resolution_clock::now();
+    total = fin-inicio;
+    g.vaciar();
+    r.vaciar();
+    archivo << "\tEl tiempo de grafo aislado: " << total.count() << std::endl;
+
+    grafoCompleto(g, PEQ);
+    inicio = std::chrono::high_resolution_clock::now();
+    prim(g, prev, dist, r);
+    fin = std::chrono::high_resolution_clock::now();
+    total = fin-inicio;
+    g.vaciar();
+    r.vaciar();
+    archivo << "\tEl tiempo de grafo completo: " << total.count() << std::endl;
+
+    //medianos
+    archivo << "Grafos medianos:\n";
+
+    grafoAislado(g, MED);
+    inicio = std::chrono::high_resolution_clock::now();
+    prim(g, prev, dist, r);
+    fin = std::chrono::high_resolution_clock::now();
+    total = fin-inicio;
+    g.vaciar();
+    r.vaciar();
+    archivo << "\tEl tiempo de grafo aislado: " << total.count() << std::endl;
+
+    grafoCompleto(g, MED);
+    inicio = std::chrono::high_resolution_clock::now();
+    prim(g, prev, dist, r);
+    fin = std::chrono::high_resolution_clock::now();
+    total = fin-inicio;
+    g.vaciar();
+    r.vaciar();
+    archivo << "\tEl tiempo de grafo completo: " << total.count() << std::endl;
+
+    //grandes
+    archivo << "Grafos grandes:\n";
+
+    grafoAislado(g, GRA);
+    inicio = std::chrono::high_resolution_clock::now();
+    prim(g, prev, dist, r);
+    fin = std::chrono::high_resolution_clock::now();
+    total = fin-inicio;
+    g.vaciar();
+    r.vaciar();
+    archivo << "\tEl tiempo de grafo aislado: " << total.count() << std::endl;
+
+    grafoCompleto(g, GRA);
+    inicio = std::chrono::high_resolution_clock::now();
+    prim(g, prev, dist, r);
+    fin = std::chrono::high_resolution_clock::now();
+    total = fin-inicio;
+    g.vaciar();
+    r.vaciar();
+    archivo << "\tEl tiempo de grafo completo: " << total.count() << std::endl;
+}
+
+void tiemposVendedor(std::ofstream& archivo)
+{
+    std::chrono::duration<double> total;
+    archivo << "Grafos pequenos:\n";
+
+    Grafo g = Grafo();
+    grafoAislado(g, PEQV);
+    auto inicio = std::chrono::high_resolution_clock::now();
+    vendedor(g);
+    auto fin = std::chrono::high_resolution_clock::now();
+    total = fin-inicio;
+    g.vaciar();
+    archivo << "\tEl tiempo de grafo aislado: " << total.count() << std::endl;
+    archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
+    if(minCosto==INF)
+        archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
+    else
+        archivo << "No hay solucion." <<std::endl;
+    grafoCompleto(g, PEQV);
+    inicio = std::chrono::high_resolution_clock::now();
+    vendedor(g);
+    fin = std::chrono::high_resolution_clock::now();
+    total = fin-inicio;
+    g.vaciar();
+    archivo << "\tEl tiempo de grafo completo: " << total.count() << std::endl;
+    archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
+    if(minCosto==INF)
+        archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
+    else
+        archivo << "No hay solucion." <<std::endl;
+
+    //medianos
+    archivo << "Grafos medianos:\n";
+
+    grafoAislado(g, MEDV);
+    inicio = std::chrono::high_resolution_clock::now();
+    vendedor(g);
+    fin = std::chrono::high_resolution_clock::now();
+    total = fin-inicio;
+    g.vaciar();
+    archivo << "\tEl tiempo de grafo aislado: " << total.count() << std::endl;
+    archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
+    if(minCosto==INF)
+        archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
+    else
+        archivo << "No hay solucion." <<std::endl;
+    grafoCompleto(g, MEDV);
+    inicio = std::chrono::high_resolution_clock::now();
+    vendedor(g);
+    fin = std::chrono::high_resolution_clock::now();
+    total = fin-inicio;
+    g.vaciar();
+    archivo << "\tEl tiempo de grafo completo: " << total.count() << std::endl;
+    archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
+    if(minCosto==INF)
+        archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
+    else
+        archivo << "No hay solucion." <<std::endl;
+    //grandes
+    archivo << "Grafos grandes:\n";
+
+    grafoAislado(g, GRAV);
+    inicio = std::chrono::high_resolution_clock::now();
+    vendedor(g);
+    fin = std::chrono::high_resolution_clock::now();
+    total = fin-inicio;
+    g.vaciar();
+    archivo << "\tEl tiempo de grafo aislado: " << total.count() << std::endl;
+    archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
+    if(minCosto==INF)
+        archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
+    else
+        archivo << "No hay solucion." <<std::endl;
+    grafoCompleto(g, GRAV);
+    inicio = std::chrono::high_resolution_clock::now();
+    vendedor(g);
+    fin = std::chrono::high_resolution_clock::now();
+    total = fin-inicio;
+    g.vaciar();
+    archivo << "\tEl tiempo de grafo completo: " << total.count() << std::endl;
+    archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
+    if(minCosto==INF)
+        archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
+    else
+        archivo << "No hay solucion." <<std::endl;}
+

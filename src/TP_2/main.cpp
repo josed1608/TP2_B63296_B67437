@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 
 //#include "grafoLista.h"
 #include "grafoMatriz.h"
@@ -7,11 +8,6 @@
 #include "dicc.h"
 #include "conjuntod.h"
 #include "algoritmos.h"
-
-
-const int PEQ = 100;
-const int MED = 1000;
-const int GRA = 10000;
 
 void probarAlgoritmos(Grafo & grafo);
 
@@ -28,7 +24,7 @@ void impAristas(Grafo& grafo);
 int main()
 {
     Grafo grafo = Grafo();
-    grafoCompleto(grafo,10);
+    grafoPredet(grafo);
 
 	bool prueba = true;
 	while(prueba){
@@ -319,7 +315,29 @@ void grafoPredet(Grafo& grafo)
 
 void verTiempos()
 {
+    std::ofstream archivoTiempos;
+    archivoTiempos.open("archivoTiempos.txt");
+    archivoTiempos << "Tiempos Dijkstra:\n";
+    //tiempoDijkstra(archivoTiempos);
+    archivoTiempos <<std::endl;
 
+    archivoTiempos << "Tiempos Floyd:\n";
+
+    archivoTiempos <<std::endl;
+
+    archivoTiempos << "Tiempos Prim:\n";
+    //tiemposPrim(archivoTiempos);
+    archivoTiempos <<std::endl;
+
+    archivoTiempos << "Tiempos Kruskal:\n";
+
+    archivoTiempos <<std::endl;
+
+    archivoTiempos << "Problema del vendedor:\n";
+    //tiemposVendedor(archivoTiempos);
+    archivoTiempos <<std::endl;
+
+    archivoTiempos.close();
 }
 
 void impEtiquetas(Grafo& grafo)

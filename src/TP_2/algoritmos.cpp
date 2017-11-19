@@ -40,7 +40,7 @@ void kruskal(Grafo &grafo)
 	}
 }
 
-void floyd(Grafo& grafo, int **pesos, vert **prevs, R1a1<vert, int> rel)
+void floyd(Grafo& grafo, int **pesos, vert **prevs, R1a1<vert, int> &rel)
 {
 	for(int i = 0; i < grafo.numVerts(); ++i)
 	{
@@ -120,18 +120,8 @@ void imprimirMatrizPrevs(vert** mat, int nVerts, Grafo &grafo, R1a1<vert, int> &
 	}
 }
 
-void imprimirCaminoFloyd(Grafo &grafo, vert vInicio, vert vFinal, int **pesos, vert **prevs)
+void imprimirCaminoFloyd(Grafo &grafo, vert vInicio, vert vFinal, int **pesos, vert **prevs, R1a1<vert, int> &rel)
 {
-	R1a1<vert, int> rel;
-	vert v = grafo.primerVert();
-	int indice = 0;
-	while(v != vertNulo)
-	{
-		rel.agregarRel(v,indice);
-		++indice;
-		v= grafo.steVert(v);
-	}
-
 	if(prevs[rel.imagen(vInicio)][rel.imagen(vFinal)] == vertNulo)
 	{
 		std::cout << "No hay camino\n";
@@ -373,7 +363,7 @@ void vendedor(Grafo &g)
         relG.agregarRel(vAct, index);
         vAct = g.steVert(vAct);
     }
-    mejorSol[0]= relG.preImagen(1);
+	mejorSol[0]= relG.preImagen(1);
     diccG.agregar(g.primerVert());
     vendedorR(g,1);
 }
@@ -477,8 +467,7 @@ void imprimirPrim(Grafo &g, vert *prev, int *weight, R1a1 <vert, int>& rel)
 {
     int tamG = g.numVerts();
     // Imprimir los resultados
-    std::cout << "El arbol de minimo costo con Prim empezando en el vertice "<< g.etiqueta(rel.preImagen(0))<< " es:\n";
-    for(int index=1; index < tamG; ++index)
+	for(int index=1; index < tamG; ++index)
     {
         std::cout << "La arista: (" << g.etiqueta(rel.preImagen(index)) << ", " << g.etiqueta(prev[index]) << ") con peso " <<  weight[index]<<std::endl;
     }

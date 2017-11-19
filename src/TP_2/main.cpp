@@ -2,8 +2,8 @@
 #include <string>
 #include <fstream>
 
-#include "grafoLista.h"
-//#include "grafoMatriz.h"
+//#include "grafoLista.h"
+#include "grafoMatriz.h"
 #include "colap.h"
 #include "dicc.h"
 #include "conjuntod.h"
@@ -242,7 +242,7 @@ void probarAlgoritmos(Grafo &grafo)
 				std::cin >> etiqSalida;
 				std::cout << "Digite la etiqeta del vertice de llegada\n";
 				std::cin >> etiqEntrada;
-				imprimirCaminoFloyd(grafo, buscarVertice(grafo, etiqSalida), buscarVertice(grafo, etiqEntrada), pesos, prevs);
+				imprimirCaminoFloyd(grafo, buscarVertice(grafo, etiqSalida), buscarVertice(grafo, etiqEntrada), pesos, prevs, rel);
 				std::cout << "Digite 1 para salir de la prueba de Floyd o 2 para preguntar por un nuevo camino\n";
 				std::cin >> opcionFloyd;
 				if(opcionFloyd == 1)
@@ -290,7 +290,7 @@ void grafoPredet(Grafo& grafo)
 	grafo.agregarVert("C");
     grafo.agregarVert("D");
     grafo.agregarVert("E");
-    grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "B"), 3);
+	/*grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "B"), 3);
     grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "C"), 4);
     grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "D"), 2);
     grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "E"), 7);
@@ -299,8 +299,8 @@ void grafoPredet(Grafo& grafo)
     grafo.agregarArista(buscarVertice(grafo,"B"), buscarVertice(grafo, "E"), 3);
     grafo.agregarArista(buscarVertice(grafo,"C"), buscarVertice(grafo, "D"), 5);
     grafo.agregarArista(buscarVertice(grafo,"C"), buscarVertice(grafo, "E"), 8);
-    grafo.agregarArista(buscarVertice(grafo,"D"), buscarVertice(grafo, "E"), 6);
-    /*
+	grafo.agregarArista(buscarVertice(grafo,"D"), buscarVertice(grafo, "E"), 6);*/
+
     grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "C"), 7);
     grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "D"), 5);
     grafo.agregarArista(buscarVertice(grafo,"A"), buscarVertice(grafo, "E"), 2);
@@ -309,7 +309,7 @@ void grafoPredet(Grafo& grafo)
     grafo.agregarArista(buscarVertice(grafo,"C"), buscarVertice(grafo, "D"), 50);
     grafo.agregarArista(buscarVertice(grafo,"C"), buscarVertice(grafo, "E"), 6);
     grafo.agregarArista(buscarVertice(grafo,"D"), buscarVertice(grafo, "E"), 1);
-    */
+
 }
 
 void verTiempos()

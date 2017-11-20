@@ -16,26 +16,30 @@
 
 #define INF INT_MAX
 #define MAXARRAY 100
+/// Tama/os grafos
 #define PEQ 5
 #define MED 10
 #define GRA 20
 #define PEQ_ARI 10
 #define MED_ARI 20
 #define GRA_ARI 40
-///Tiempos vendedor
+///Tama/os grafos vendedor
 #define PEQV 5
 #define MEDV 10
 #define GRAV 20
+#define PEQV_ARI 10
+#define MEDV_ARI 20
+#define GRAV_ARI 40
 
 //Variables globales para el problema del vendedor
-extern int solucAct [MAXARRAY];
+extern vert solucAct [MAXARRAY];
 extern Dicc<vert> diccG;
-extern int mejorSol [MAXARRAY];
+extern vert mejorSol [MAXARRAY];
 extern int minCosto;
 extern int cantidadSol;
-extern R1a1 <vert, int> relG;
 extern int maxTamG;
 extern int gananciaAct;
+
 
 //Grafos de prueba de tiempos
 extern Grafo aisladoPeq;

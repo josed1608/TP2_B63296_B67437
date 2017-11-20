@@ -311,7 +311,8 @@ void prim(Grafo &g, vert *prev, int *weight, R1a1 <vert, int>& rel )
         rel.agregarRel(vAct, index);
         vAct = g.steVert(vAct);
     }
-	prev[0]= weight[0] =0;
+    weight[0]= 0;
+    prev[0]= vertNulo;
     for(int index=0; index < tamG; ++index)
     {
         pMen=INF;
@@ -341,13 +342,12 @@ void prim(Grafo &g, vert *prev, int *weight, R1a1 <vert, int>& rel )
     }
 }
 // Variables globales vendedor
-int solucAct [MAXARRAY];
+vert solucAct [MAXARRAY];
 Dicc<vert> diccG;
-int mejorSol[MAXARRAY];
+vert mejorSol[MAXARRAY];
 int minCosto;
 int cantidadSol;
 int gananciaAct;
-R1a1 <vert, int> relG;
 int maxTamG;
 
 void vendedor(Grafo &g)
@@ -356,22 +356,15 @@ void vendedor(Grafo &g)
     minCosto =INF;
     cantidadSol =0;
     maxTamG = g.numVerts();
-    vert vAct=g.primerVert();
-    // Establecer relaciones
-    for(int index =1; index<= maxTamG;++index)
-    {
-        relG.agregarRel(vAct, index);
-        vAct = g.steVert(vAct);
-    }
-	mejorSol[0]= relG.preImagen(1);
-    diccG.agregar(g.primerVert());
-    vendedorR(g,1);
+    vert vPrimero = g.primerVert();
+    solucAct[1]= mejorSol[1]= vPrimero ;
+    diccG.agregar(vPrimero);
+    vendedorR(g, 2);
 }
 
 void limpiarVariablesGlobales()
 {
     diccG.vaciar();
-    relG.vaciar();
 }
 
 void imprimirVendedor(Grafo &g)
@@ -382,8 +375,8 @@ void imprimirVendedor(Grafo &g)
     if(cantidadSol !=0)
     {
         std::cout << "La solucion del problema del vendedor tiene una solucion optima de " << minCosto << " y la solucion siendo:\n";
-        for(int index =0; index< maxTamG; ++index)
-            std::cout <<g.etiqueta(relG.preImagen(mejorSol[index])) << " ";
+        for(int index =1; index<= maxTamG; ++index)
+            std::cout <<g.etiqueta(mejorSol[index]) << " ";
         std::cout<< std::endl;
     }
 
@@ -391,37 +384,33 @@ void imprimirVendedor(Grafo &g)
 
 void vendedorR(Grafo &g, int i)
 {
-    vert vAct=relG.preImagen(i);
     // Vaya desde el vertice actual hasta todos los adyacentes de este
-    for(int index=1; index<=maxTamG; ++index)
+    for(vert vAdy= g.primerVertAdy(solucAct[i-1]); vAdy!= vertNulo ; vAdy= g.steVertAdy(solucAct[i-1], vAdy))
     {
-        vert vAdy=relG.preImagen(index);
         // Si se puede agregar
-        if( g.adyacente(vAdy,vAct) && !diccG.pertenece(vAdy))
+        if( !diccG.pertenece(vAdy))
         {
             diccG.agregar(vAdy);
-            solucAct[i]= relG.imagen(vAdy);
-            gananciaAct+= g.pesoArista(vAct, vAdy);
+            solucAct[i]= vAdy;
+            gananciaAct+= g.pesoArista(solucAct[i-1], vAdy);
             // Si esta en el ultimo agregado
-            if(i ==maxTamG-1 )
+            if(i == maxTamG)
             {
                 // Si se puede cerrar el ciclo si se tiene una solucion factible
-                if( g.adyacente(relG.preImagen(1), vAdy))
+                if( g.adyacente(g.primerVert(), vAdy))
                 {
                     ++cantidadSol;
-                    gananciaAct+= g.pesoArista(relG.preImagen(1), vAdy);
-                    std::cout << gananciaAct<< std::endl;
-                    for(int indexP =1; indexP<= maxTamG; ++indexP)
-                        std::cout <<   g.etiqueta(relG.preImagen (solucAct[indexP]))<< " ";
-                    std::cout << std::endl;
+                    // Agregar el peso entre el ultimo y el actual
+                    gananciaAct+= g.pesoArista(g.primerVert(), vAdy);
                     // Si es mejor que la solucion anterior, haga esta la mejor solucion
                     if (gananciaAct < minCosto)
                     {
                         minCosto = gananciaAct;
-                        for(int indexCopy =1; indexCopy <= maxTamG; ++indexCopy)
+                        for(int indexCopy =2; indexCopy <= maxTamG; ++indexCopy)
                             mejorSol[indexCopy] = solucAct[indexCopy];
                     }
-                    gananciaAct-= g.pesoArista(relG.preImagen(1), vAdy);
+                    // Arrepentimiento de el ultimo
+                    gananciaAct-= g.pesoArista(g.primerVert(), vAdy);
                 }
             }
             else
@@ -431,9 +420,8 @@ void vendedorR(Grafo &g, int i)
             }
 
             // Arepentimiento
-            gananciaAct -= g.pesoArista(vAct, vAdy);
+            gananciaAct -= g.pesoArista(solucAct[i-1], vAdy);
             diccG.borrar(vAdy);
-
         }
     }
 }
@@ -815,7 +803,7 @@ void tiemposKruskal(std::ofstream &archivo)
 			   "Grafos pequenos:\n";
 
 	R1a1 <vert, int> r;
-
+    //Peque/os
 	auto inicio = std::chrono::high_resolution_clock::now();
 	kruskal(todAUnoPeq);
 	auto fin = std::chrono::high_resolution_clock::now();
@@ -899,19 +887,46 @@ void tiemposVendedor(std::ofstream& archivo)
     auto fin = std::chrono::high_resolution_clock::now();
     total = fin-inicio;
     g.vaciar();
-    archivo << "\tEl tiempo de grafo aislado: " << total.count() << std::endl;
+    archivo << "\tEl tiempo de grafo aislado es: " << total.count() << std::endl;
     archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
     if(minCosto==INF)
         archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
     else
         archivo << "No hay solucion." <<std::endl;
+
     grafoCompleto(g, PEQV);
     inicio = std::chrono::high_resolution_clock::now();
     vendedor(g);
     fin = std::chrono::high_resolution_clock::now();
     total = fin-inicio;
     g.vaciar();
-    archivo << "\tEl tiempo de grafo completo: " << total.count() << std::endl;
+    archivo << "\tEl tiempo de grafo completo es: " << total.count() << std::endl;
+    archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
+    if(minCosto==INF)
+        archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
+    else
+        archivo << "No hay solucion." <<std::endl;
+
+    grafoTodosAUno(g, PEQV);
+    inicio = std::chrono::high_resolution_clock::now();
+    vendedor(g);
+    fin = std::chrono::high_resolution_clock::now();
+    total = fin-inicio;
+    g.vaciar();
+    archivo << "\tEl tiempo de grafo todo a uno es: " << total.count() << std::endl;
+    archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
+    if(minCosto==INF)
+        archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
+    else
+        archivo << "No hay solucion." <<std::endl;
+
+    grafoAleatorio(g, PEQV, PEQV_ARI);
+    inicio = std::chrono::high_resolution_clock::now();
+    vendedor(g);
+    fin = std::chrono::high_resolution_clock::now();
+    total = fin-inicio;
+    g.vaciar();
+    archivo << "\tEl tiempo de grafo aleatorio es: " << total.count() << std::endl;
     archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
     if(minCosto==INF)
         archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
@@ -927,51 +942,106 @@ void tiemposVendedor(std::ofstream& archivo)
     fin = std::chrono::high_resolution_clock::now();
     total = fin-inicio;
     g.vaciar();
-    archivo << "\tEl tiempo de grafo aislado: " << total.count() << std::endl;
+    archivo << "\tEl tiempo de grafo aislado es: " << total.count() << std::endl;
     archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
     if(minCosto==INF)
         archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
     else
         archivo << "No hay solucion." <<std::endl;
+
     grafoCompleto(g, MEDV);
     inicio = std::chrono::high_resolution_clock::now();
     vendedor(g);
     fin = std::chrono::high_resolution_clock::now();
     total = fin-inicio;
     g.vaciar();
-    archivo << "\tEl tiempo de grafo completo: " << total.count() << std::endl;
+    archivo << "\tEl tiempo de grafo completo es: " << total.count() << std::endl;
     archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
     if(minCosto==INF)
         archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
     else
         archivo << "No hay solucion." <<std::endl;
-    //grandes
-    archivo << "Grafos grandes:\n";
 
-    grafoAislado(g, GRAV);
+    grafoTodosAUno(g, MEDV);
     inicio = std::chrono::high_resolution_clock::now();
     vendedor(g);
     fin = std::chrono::high_resolution_clock::now();
     total = fin-inicio;
     g.vaciar();
-    archivo << "\tEl tiempo de grafo aislado: " << total.count() << std::endl;
+    archivo << "\tEl tiempo de grafo todo a uno es: " << total.count() << std::endl;
     archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
     if(minCosto==INF)
         archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
     else
         archivo << "No hay solucion." <<std::endl;
+
+    grafoAleatorio(g, MEDV, MEDV_ARI);
+    inicio = std::chrono::high_resolution_clock::now();
+    vendedor(g);
+    fin = std::chrono::high_resolution_clock::now();
+    total = fin-inicio;
+    g.vaciar();
+    archivo << "\tEl tiempo de grafo aleatorio es: " << total.count() << std::endl;
+    archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
+    if(minCosto==INF)
+        archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
+    else
+        archivo << "No hay solucion." <<std::endl;
+
+    //grandes
+    archivo << "Grafos grandes:\n";
+
+    grafoAislado(g, GRAV);
+     inicio = std::chrono::high_resolution_clock::now();
+    vendedor(g);
+    fin = std::chrono::high_resolution_clock::now();
+    total = fin-inicio;
+    g.vaciar();
+    archivo << "\tEl tiempo de grafo aislado es: " << total.count() << std::endl;
+    archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
+    if(minCosto==INF)
+        archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
+    else
+        archivo << "No hay solucion." <<std::endl;
+
     grafoCompleto(g, GRAV);
     inicio = std::chrono::high_resolution_clock::now();
     vendedor(g);
     fin = std::chrono::high_resolution_clock::now();
     total = fin-inicio;
     g.vaciar();
-    archivo << "\tEl tiempo de grafo completo: " << total.count() << std::endl;
+    archivo << "\tEl tiempo de grafo completo es: " << total.count() << std::endl;
     archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
     if(minCosto==INF)
         archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
     else
-        archivo << "No hay solucion." <<std::endl;}
+        archivo << "No hay solucion." <<std::endl;
+
+    grafoTodosAUno(g, GRAV);
+    inicio = std::chrono::high_resolution_clock::now();
+    vendedor(g);
+    fin = std::chrono::high_resolution_clock::now();
+    total = fin-inicio;
+    g.vaciar();
+    archivo << "\tEl tiempo de grafo todo a uno es: " << total.count() << std::endl;
+    archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
+    if(minCosto==INF)
+        archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
+    else
+        archivo << "No hay solucion." <<std::endl;
+
+    grafoAleatorio(g, GRAV, GRAV_ARI);
+    inicio = std::chrono::high_resolution_clock::now();
+    vendedor(g);
+    fin = std::chrono::high_resolution_clock::now();
+    total = fin-inicio;
+    archivo << "\tEl tiempo de grafo aleatorio es: " << total.count() << std::endl;
+    archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
+    if(minCosto==INF)
+        archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
+    else
+        archivo << "No hay solucion." <<std::endl;
+}
 
 Grafo aisladoPeq;
 Grafo aisladoMed;

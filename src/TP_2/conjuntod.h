@@ -2,8 +2,8 @@
 #define CONJUNTOD_H
 
 #include <iostream>
-//#include "grafoLista.h"
-#include "grafoMatriz.h"
+#include "grafoLista.h"
+//#include "grafoMatriz.h"
 
 #include<string>
 

@@ -2,7 +2,7 @@
 #define GRAFOMATRIZ_H
 
 #include <string>
-#define MAX 100000 //tamaño máximo
+#define MAX 300 //tamaño máximo
 #define PESONULL -1
 
 typedef int peso;

@@ -2,8 +2,8 @@
 #include <string>
 #include <fstream>
 
-#include "grafoLista.h"
-//#include "grafoMatriz.h"
+//#include "grafoLista.h"
+#include "grafoMatriz.h"
 #include "colap.h"
 #include "dicc.h"
 #include "conjuntod.h"
@@ -266,7 +266,7 @@ void probarAlgoritmos(Grafo &grafo)
 			iguales(grafo, grafoCopiarIguales) == true ? std::cout << "iguales\n" : std::cout << "no son iguales\n";
 			break;
         case 7:
-            limpiarVariablesGlobales();
+			//7limpiarVariablesGlobales();
             vendedor(grafo);
             imprimirVendedor(grafo); break;
         default: prueba = false; break;
@@ -318,7 +318,7 @@ void verTiempos()
 	tiemposKruskal(archivoTiempos);
 	archivoTiempos <<std::endl;
 
-	//tiemposVendedor(archivoTiempos);
+	tiemposVendedor(archivoTiempos);
     archivoTiempos <<std::endl;
 
     archivoTiempos.close();

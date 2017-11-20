@@ -17,19 +17,19 @@
 #define INF INT_MAX
 #define MAXARRAY 100
 /// Tama/os grafos
-#define PEQ 5
-#define MED 10
-#define GRA 20
-#define PEQ_ARI 10
-#define MED_ARI 20
-#define GRA_ARI 40
+#define PEQ 100
+#define MED 200
+#define GRA 300
+#define PEQ_ARI 200
+#define MED_ARI 400
+#define GRA_ARI 600
 ///Tama/os grafos vendedor
-#define PEQV 5
+#define PEQV 8
 #define MEDV 10
-#define GRAV 20
+#define GRAV 12
 #define PEQV_ARI 10
 #define MEDV_ARI 20
-#define GRAV_ARI 40
+#define GRAV_ARI 30
 
 //Variables globales para el problema del vendedor
 extern vert solucAct [MAXARRAY];

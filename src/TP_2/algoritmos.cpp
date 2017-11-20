@@ -352,6 +352,7 @@ int maxTamG;
 
 void vendedor(Grafo &g)
 {
+	diccG.vaciar();
     gananciaAct =0;
     minCosto =INF;
     cantidadSol =0;
@@ -889,7 +890,7 @@ void tiemposVendedor(std::ofstream& archivo)
     g.vaciar();
     archivo << "\tEl tiempo de grafo aislado es: " << total.count() << std::endl;
     archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
-    if(minCosto==INF)
+	if(minCosto!=INF)
         archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
     else
         archivo << "No hay solucion." <<std::endl;
@@ -902,7 +903,7 @@ void tiemposVendedor(std::ofstream& archivo)
     g.vaciar();
     archivo << "\tEl tiempo de grafo completo es: " << total.count() << std::endl;
     archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
-    if(minCosto==INF)
+	if(minCosto!=INF)
         archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
     else
         archivo << "No hay solucion." <<std::endl;
@@ -915,7 +916,7 @@ void tiemposVendedor(std::ofstream& archivo)
     g.vaciar();
     archivo << "\tEl tiempo de grafo todo a uno es: " << total.count() << std::endl;
     archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
-    if(minCosto==INF)
+	if(minCosto!=INF)
         archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
     else
         archivo << "No hay solucion." <<std::endl;
@@ -928,7 +929,7 @@ void tiemposVendedor(std::ofstream& archivo)
     g.vaciar();
     archivo << "\tEl tiempo de grafo aleatorio es: " << total.count() << std::endl;
     archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
-    if(minCosto==INF)
+	if(minCosto!=INF)
         archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
     else
         archivo << "No hay solucion." <<std::endl;
@@ -944,7 +945,7 @@ void tiemposVendedor(std::ofstream& archivo)
     g.vaciar();
     archivo << "\tEl tiempo de grafo aislado es: " << total.count() << std::endl;
     archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
-    if(minCosto==INF)
+	if(minCosto!=INF)
         archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
     else
         archivo << "No hay solucion." <<std::endl;
@@ -957,7 +958,7 @@ void tiemposVendedor(std::ofstream& archivo)
     g.vaciar();
     archivo << "\tEl tiempo de grafo completo es: " << total.count() << std::endl;
     archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
-    if(minCosto==INF)
+	if(minCosto!=INF)
         archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
     else
         archivo << "No hay solucion." <<std::endl;
@@ -970,7 +971,7 @@ void tiemposVendedor(std::ofstream& archivo)
     g.vaciar();
     archivo << "\tEl tiempo de grafo todo a uno es: " << total.count() << std::endl;
     archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
-    if(minCosto==INF)
+	if(minCosto!=INF)
         archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
     else
         archivo << "No hay solucion." <<std::endl;
@@ -983,7 +984,7 @@ void tiemposVendedor(std::ofstream& archivo)
     g.vaciar();
     archivo << "\tEl tiempo de grafo aleatorio es: " << total.count() << std::endl;
     archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
-    if(minCosto==INF)
+	if(minCosto!=INF)
         archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
     else
         archivo << "No hay solucion." <<std::endl;
@@ -999,7 +1000,7 @@ void tiemposVendedor(std::ofstream& archivo)
     g.vaciar();
     archivo << "\tEl tiempo de grafo aislado es: " << total.count() << std::endl;
     archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
-    if(minCosto==INF)
+	if(minCosto!=INF)
         archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
     else
         archivo << "No hay solucion." <<std::endl;
@@ -1012,7 +1013,7 @@ void tiemposVendedor(std::ofstream& archivo)
     g.vaciar();
     archivo << "\tEl tiempo de grafo completo es: " << total.count() << std::endl;
     archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
-    if(minCosto==INF)
+	if(minCosto!=INF)
         archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
     else
         archivo << "No hay solucion." <<std::endl;
@@ -1025,7 +1026,7 @@ void tiemposVendedor(std::ofstream& archivo)
     g.vaciar();
     archivo << "\tEl tiempo de grafo todo a uno es: " << total.count() << std::endl;
     archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
-    if(minCosto==INF)
+	if(minCosto!=INF)
         archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
     else
         archivo << "No hay solucion." <<std::endl;
@@ -1037,7 +1038,7 @@ void tiemposVendedor(std::ofstream& archivo)
     total = fin-inicio;
     archivo << "\tEl tiempo de grafo aleatorio es: " << total.count() << std::endl;
     archivo << "\tSoluciones factibles: " << cantidadSol << std::endl;
-    if(minCosto==INF)
+	if(minCosto!=INF)
         archivo << "\tSolucion optima: " <<  minCosto <<std::endl;
     else
         archivo << "No hay solucion." <<std::endl;

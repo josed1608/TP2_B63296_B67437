@@ -1,7 +1,7 @@
 #ifndef COLAP_H
 #define COLAP_H
 
-#define MAXH 300*300
+#define MAXH 44850 // 300*299/2
 
 template <typename DataType>
 class ColaP

@@ -200,8 +200,8 @@ void probarAlgoritmos(Grafo &grafo)
 	vert vectorVertices[grafo.numVerts()], vAct;
     int vectorEnteros[grafo.numVerts()];
 
-	Grafo grafoCopiarIguales;
-	grafoPredet(grafoCopiarIguales);
+	Grafo* grafoCopiarIguales = new Grafo();
+	grafoPredet(*grafoCopiarIguales);
 
 	int** pesos = new int*[grafo.numVerts()];
 	vert** prevs = new vert*[grafo.numVerts()];
@@ -259,11 +259,11 @@ void probarAlgoritmos(Grafo &grafo)
         case 4: kruskal(grafo); break;
 		case 5:
 			std::cout << "Se copio el grafo predeterminado en el grafo de pruebas\n";
-			copiar(grafo, grafoCopiarIguales);
+			copiar(grafo, *grafoCopiarIguales);
 			break;
 		case 6:
 			std::cout << "Se compararan el grafo predeterminado con el actual grafo de pruebas\n";
-			iguales(grafo, grafoCopiarIguales) == true ? std::cout << "iguales\n" : std::cout << "no son iguales\n";
+			iguales(grafo, *grafoCopiarIguales) == true ? std::cout << "iguales\n" : std::cout << "no son iguales\n";
 			break;
         case 7:
 			//7limpiarVariablesGlobales();
@@ -280,6 +280,8 @@ void probarAlgoritmos(Grafo &grafo)
 	}
 	delete pesos;
 	delete prevs;
+
+	delete grafoCopiarIguales;
 }
 
 void grafoPredet(Grafo& grafo)
